@@ -473,4 +473,6 @@ O desaparecimento de Jailson é o motivo pessoal que leva Robson à fazenda; os 
 
 Assim, Ecos da Fazenda Mendes mantém o terror e os mecanismos do roteiro original, mas ganha uma história própria, com personagens, conflitos e uma motivação mais pessoal para o protagonista.
 
+teste
+
 
