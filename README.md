@@ -117,9 +117,8 @@ Sua pele apresenta manchas escuras e pequenas formações semelhantes a fungos.
 Ele ainda parece humano, mas seus movimentos são anormais.
 
 Robson percebe que a carta de Jailson dizia a verdade.
+
 Ato 2 — O primeiro alarme
-
-
 
 Ao explorar a biblioteca da casa, Robson encontra documentos sobre a administração da fazenda e registros de investimentos feitos por uma empresa farmacêutica desconhecida.
 
@@ -159,7 +158,9 @@ Dentro do cofre, Robson encontra um cartão de acesso e documentos relacionados 
 Caso o tempo termine, Augusto chega à biblioteca e mata Robson.
 
 A primeira regra da fazenda é revelada: investigar é seguro, mas manipular mecanismos protegidos atrai os infectados.
+
 Ato 3 — O segredo da família Mendes
+
 Conforme explora a residência, Robson encontra fotografias, anotações, gravações e documentos que revelam o passado da família.
 A origem dos experimentos
 Três anos antes dos acontecimentos do jogo, Augusto Mendes enfrentava dificuldades financeiras.
@@ -181,17 +182,8 @@ Os animais começaram a apresentar comportamentos agressivos, alterações físi
 Mesmo diante dos riscos, os pesquisadores continuaram os experimentos.
 
 Posteriormente, membros da família Mendes foram submetidos à substância.
+
 A transformação da família
-
-
-
-
-
-
-
-
-mobygames.com
-
 
 O Composto M-13 continha um organismo fúngico experimental capaz de colonizar tecidos vivos.
 
@@ -208,24 +200,27 @@ Os outros membros da família apresentavam estágios diferentes de infecção.
 Alguns perderam quase completamente a capacidade de falar, enquanto outros continuaram repetindo hábitos antigos, como preparar refeições ou cuidar dos animais.
 
 A família havia se transformado em criaturas parcialmente humanas, com corpos deteriorados e cobertos por formações fúngicas.
-Por que Jailson foi preso?
-Dois anos antes, Jailson chegou à fazenda para realizar um serviço na bomba de irrigação.
+Por que Jailson foi preso? (Diário do Augusto ainda consciente)
 
-Durante o trabalho, percebeu que parte da água utilizada na propriedade apresentava uma coloração escura.
+Diario de Jailson
+Dois anos antes(alguma data de 2024, jogo se passa em 2026), Vou à fazenda para realizar um serviço na bomba de irrigação.
 
-Investigando o problema, encontrou tubulações ligadas a uma instalação subterrânea.
+Durante o trabalho, percebi que parte da água utilizada na propriedade apresentava uma coloração escura.
 
-Jailson descobriu registros dos experimentos e tentou abandonar a propriedade para denunciar o que havia encontrado.
+Investigando o problema, encontrei tubulações ligadas a uma instalação subterrânea.
 
-Augusto percebeu seu comportamento e o confrontou.
+Descobri registros dos experimentos e tentei fugir da fazenda para denunciar o que havia encontrado.
 
-O fazendeiro, já afetado pelo composto, acreditava que qualquer pessoa que conhecesse os experimentos estava contaminada e deveria permanecer isolada.
+Augusto percebeu meu comportamento e me confrontou.
 
-Por isso, capturou Jailson e o trancou em uma cela escondida atrás de uma parede falsa da residência.
+O fazendeiro, bem estranho, me capturou e me trancou em uma cela escondida atrás de uma parede falsa da residência. (já afetado pelo composto, Augusto acreditava que qualquer pessoa que conhecesse os experimentos estava contaminada e deveria permanecer isolada.)
 
-Jailson permaneceu vivo porque Augusto continuava alimentando os prisioneiros que considerava possíveis candidatos à recuperação.
+Eu permaneci vivo porque Augusto ainda me alimentava, mesmo preso. (Augusto continuava alimentando os prisioneiros que considerava possíveis candidatos à recuperação.)
 
-Durante o cativeiro, Jailson conseguiu escrever mensagens e reunir informações sobre os mecanismos da fazenda.
+Durante o cativeiro, consegui escrever mensagens e reunir informações sobre os mecanismos da fazenda.
+
+Espero que alguém encontre, e que minha carta chegue a Robson.
+FIM DIARIO
 
 Uma dessas mensagens chegou a Robson por intermédio de um antigo funcionário que conhecia uma passagem de manutenção.
 Os sensores
@@ -238,17 +233,8 @@ Com a deterioração do sistema de segurança, os sensores passaram a representa
 Ao serem ativados, os alarmes atraíam os membros infectados da família.
 
 Augusto, que permanecia na casa principal, era o mais perigoso deles.
+
 Ato 4 — O quarto de Augusto e a cela secreta
-
-
-
-
-
-
-
-
-steambase.io
-
 
 Ao chegar ao quarto principal, Robson encontra o diário de Augusto Mendes.
 
@@ -256,6 +242,7 @@ As primeiras páginas descrevem os investimentos recebidos da empresa farmacêut
 
 As últimas páginas apresentam uma escrita irregular e confusa.
 Diário de Augusto Mendes — Última página
+
 "Minha família está doente.
 
 Os homens do laboratório disseram que o composto nos tornaria mais fortes. Disseram que ninguém mais precisaria sofrer.
@@ -274,6 +261,7 @@ Os alarmes ainda funcionam. Eles sempre vêm quando escutam o som.
 
 Se alguém conseguir acessar o laboratório, talvez ainda exista uma maneira de terminar com isso."
 
+
 No quarto, Robson encontra um mecanismo escondido dentro de um armário.
 
 A fechadura exige uma combinação descoberta a partir das informações do diário e dos objetos encontrados na casa.
@@ -289,6 +277,7 @@ Após resolver o mecanismo, uma parede falsa se desloca, revelando uma passagem 
 No final do corredor, existe uma cela.
 
 Dentro dela, está Jailson.
+
 O reencontro
 Robson ilumina o interior da cela com sua lanterna.
 
@@ -315,24 +304,15 @@ A única maneira de escapar é desativar o protocolo de segurança.
 
 Ele também explica que o cartão encontrado na biblioteca permite acessar parte do sistema subterrâneo.
 
-Robson liberta Jailson da cela.
+Robson liberta Jailson da cela.(com a chave enferrujada achada na foto do começo)
 
 Entretanto, Jailson está debilitado demais para acompanhar o protagonista pelo restante da fazenda.
 
 Os dois combinam que Jailson permanecerá escondido na passagem secreta enquanto Robson tenta desbloquear a saída.
 
 Antes de se separar, Jailson entrega uma anotação contendo parte do código de emergência.
+
 Ato 5 — O laboratório subterrâneo
-
-
-
-
-
-
-
-
-nexushub.co.za
-
 
 Com os itens coletados e as informações obtidas, Robson consegue desbloquear o acesso ao porão.
 
@@ -351,6 +331,7 @@ Por isso, os alarmes foram instalados na propriedade.
 A família Mendes foi utilizada como grupo experimental após a interrupção dos testes com animais.
 
 Quando os resultados se tornaram incontroláveis, a empresa abandonou o laboratório, deixando Augusto e seus familiares isolados.
+
 A descoberta final
 Em um registro de vídeo, Robson encontra uma gravação realizada pouco antes do abandono das instalações.
 
@@ -361,6 +342,7 @@ A abertura dos portões exigia um procedimento de emergência realizado diretame
 O procedimento, entretanto, acionaria o alarme principal.
 
 Robson percebe que precisará escolher entre permanecer preso ou enfrentar o mecanismo.
+
 Ato 6 — O último alarme
 No fundo do laboratório, Robson encontra um painel de emergência.
 
@@ -396,7 +378,9 @@ Cada resposta incorreta consome parte do tempo disponível.
 Quando o tempo chega ao fim, Augusto invade o laboratório.
 
 Não existe outro caminho para fugir.
+
 Final de vitória — O último amanhecer
+
 Robson consegue inserir a sequência correta.
 
 O sistema de emergência é ativado.
@@ -426,6 +410,7 @@ Na janela da casa principal, uma silhueta observa os dois.
 Augusto ainda está vivo.
 
 FIM — VOCÊ ESCAPOU DA FAZENDA MENDES.
+
 Final de derrota — Mais um desaparecido
 Caso Robson não consiga resolver um dos enigmas antes do tempo terminar, o alarme continua tocando.
 
