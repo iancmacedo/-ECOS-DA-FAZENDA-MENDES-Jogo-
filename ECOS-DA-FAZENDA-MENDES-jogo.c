@@ -4,7 +4,6 @@
 #include <time.h>
 #include <stdbool.h>
 
-
 struct Player {
     char nome[10]; //Robson
     int vida; //100
@@ -24,6 +23,7 @@ struct Ambiente {
     int id; //8 locais
     char nome[50];
     char descricao[100];
+    char arteASCII[800];
     int saidas[4]; //Norte, Sul, Leste, Oeste
     bool visitado, bloqueado;
 };
@@ -41,24 +41,81 @@ void limparBuffer() {
 }
 
 void mostrarTitulo() {
-    printf("\n");
-    printf("#####  ###   ###   ####    ####   ###     #####  ###  ##### ##### #   # ####   ###     #   # ##### #   # ####  #####  ####\n");
-    printf("#     #     #   # #        #   # #   #    #     #   #    #  #     ##  # #   # #   #    ## ## #     ##  # #   # #     #\n");
-    printf("####  #     #   #  ###     #   # #####    ####  #####   #   ####  # # # #   # #####    # # # ####  # # # #   # ####   ###\n");
-    printf("#     #     #   #     #    #   # #   #    #     #   #  #    #     #  ## #   # #   #    #   # #     #  ## #   # #         #\n");
-    printf("#####  ###   ###  ####     ####  #   #    #     #   # ##### ##### #   # ####  #   #    #   # ##### #   # ####  ##### ####\n");
-    printf("\n");
+    puts("                                                                                                                     \n"
+    "#####  ###   ###   ####    ####   ###     #####  ###  ##### ##### #   # ####   ###     #   # ##### #   # ####  #####  ####\n"
+    "#     #     #   # #        #   # #   #    #     #   #    #  #     ##  # #   # #   #    ## ## #     ##  # #   # #     #    \n"
+    "####  #     #   #  ###     #   # #####    ####  #####   #   ####  # # # #   # #####    # # # ####  # # # #   # ####   ### \n"
+    "#     #     #   #     #    #   # #   #    #     #   #  #    #     #  ## #   # #   #    #   # #     #  ## #   # #         #\n"
+    "#####  ###   ###  ####     ####  #   #    #     #   # ##### ##### #   # ####  #   #    #   # ##### #   # ####  ##### #### \n"
+    "\n\n\n"
+        "####  #   #      ###  ###  #   #\n"
+        "#   #  # #  #     #  #   # ##  #\n"
+        "####    #         #  ##### # # #\n"
+        "#   #   #   #     #  #   # #  ##\n"
+        "####    #        ### #   # #   #\n"
+        "\n\n"
+        "Se ficar em duvida digite 'DICA'\n"
+    );
+}
 
-    printf("\n");
-    printf("\n");
-    printf("####  #   #      ###  ###  #   #\n");
-    printf("#   #  # #  #     #  #   # ##  #\n");
-    printf("####    #         #  ##### # # #\n");
-    printf("#   #   #   #     #  #   # #  ##\n");
-    printf("####    #        ### #   # #   #\n");
-    printf("se ficar em duvida digite dica");
-    printf("\n");
-    
+void mostrarCarta(){
+    puts("\n"
+    "+--------------------------------------------------+\n"
+    "|                                                  |\n"
+    "|                 CARTA DE JAILSON                 |\n"
+    "|                                                  |\n"
+    "| Robson,                                          |\n"
+    "|                                                  |\n"
+    "| Se voce esta lendo isso, ainda estou vivo.       |\n"
+    "| Estou preso na Fazenda Mendes.                   |\n"
+    "|                                                  |\n"
+    "| A familia nao e mais a mesma.                    |\n"
+    "| Existe alguma coisa crescendo dentro deles.      |\n"
+    "|                                                  |\n"
+    "| O velho Augusto me trancou em um lugar secreto.  |\n"
+    "| Ele diz que estou doente, mas eu sei a verdade.  |\n"
+    "|                                                  |\n"
+    "| Existe um laboratorio debaixo da casa.           |\n"
+    "| Foi la que tudo comecou.                         |\n"
+    "|                                                  |\n"
+    "| Se vier me procurar, tome cuidado.               |\n"
+    "| Os alarmes atraem alguma coisa.                  |\n"
+    "|                                                  |\n"
+    "| Procure o retrato da familia na sala.            |\n"
+    "|                                                  |\n"
+    "| E Robson...                                      |\n"
+    "| Se ouvir alguem chamando meu nome, nao responda. |\n"
+    "|                                                  |\n"
+    "|                         Seu amigo, Jailson       |\n"
+    "+--------------------------------------------------+\n"
+    );
+}
+
+void MostrarPrologo(){
+    puts(
+        "\n====================================\n"
+        "              PROLOGO                 \n"
+        "======================================\n"
+        "\n"
+        "\nHa dois anos, Jailson desapareceu misteriosamente.\n"
+        "Ele havia ido ate a Fazenda Mendes para realizar\n"
+        "um servico na propriedade vizinha.\n"
+        "\nDesde entao, Robson nunca mais teve noticias do amigo.\n"
+        "Ate que, em uma tarde chuvosa, uma carta chegou...\n"
+        "\nPressione ENTER para continuar..."
+    );
+    getchar();
+    mostrarCarta();
+
+    puts("\nPressione ENTER para continuar...");
+    getchar();
+
+    puts(
+        "\nRobson decide ir ate a Fazenda Mendes procurar Jailson.\n"
+        "Ao anoitecer, ele chega diante do portao da propriedade.\n"
+        "\n"
+        "Pressione ENTER para continuar...");
+    getchar();
 
 }
 
@@ -93,53 +150,20 @@ void aplicarDano(struct Player *jogador, int dano) {
     }
 } //aplicarDano(&jogador, 20); --> chama assim
 
-void mostrarCarta(){
-    printf("\n");
-    printf("+--------------------------------------------------+\n");
-    printf("|                                                  |\n");
-    printf("|                 CARTA DE JAILSON                 |\n");
-    printf("|                                                  |\n");
-    printf("| Robson,                                          |\n");
-    printf("|                                                  |\n");
-    printf("| Se voce esta lendo isso, ainda estou vivo.       |\n");
-    printf("| Estou preso na Fazenda Mendes.                   |\n");
-    printf("|                                                  |\n");
-    printf("| A familia nao e mais a mesma.                    |\n");
-    printf("| Existe alguma coisa crescendo dentro deles.      |\n");
-    printf("|                                                  |\n");
-    printf("| O velho Augusto me trancou em um lugar secreto.  |\n");
-    printf("| Ele diz que estou doente, mas eu sei a verdade.  |\n");
-    printf("|                                                  |\n");
-    printf("| Existe um laboratorio debaixo da casa.           |\n");
-    printf("| Foi la que tudo comecou.                         |\n");
-    printf("|                                                  |\n");
-    printf("| Se vier me procurar, tome cuidado.               |\n");
-    printf("| Os alarmes atraem alguma coisa.                  |\n");
-    printf("|                                                  |\n");
-    printf("| Procure o retrato da familia na sala.            |\n");
-    printf("|                                                  |\n");
-    printf("| E Robson...                                      |\n");
-    printf("| Se ouvir alguem chamando meu nome, nao responda. |\n");
-    printf("|                                                  |\n");
-    printf("|                         Seu amigo, Jailson       |\n");
-    printf("+--------------------------------------------------+\n");
-}
-
 void mostrarAmbiente(struct Player jogador) {
-
     if (jogador.localAtual == 0) {
-        printf("\n========== QUINTAL ==========\n\n");
-
-        printf("                                 /\\\n");
-        printf("                                /**\\\n");
-        printf("               /\\             /****\\\n");
-        printf("              /  \\           /******\\\n");
-        printf("         ____/____\\____     /********\\\n");
-        printf("         |  []    []  |         ||\n");
-        printf("   _     |     __     |         ||\n");
-        printf("  |_|    |____|__|____|         ||\n");
-        printf("    _________________________________\n");
-
+        puts(
+            "\n========== QUINTAL ==========\n\n"
+            "                                 /\\\n"
+            "                                /**\\\n"
+            "               /\\             /****\\\n"
+            "              /  \\           /******\\\n"
+            "         ____/____\\____     /********\\\n"
+            "         |  []    []  |          ||\n"
+            "   _     |     __     |          ||\n"
+            "  |_|    |____|__|____|          ||\n"
+            "    _________________________________\n"
+        ); 
         printf("\nVoce esta no quintal da Fazenda Mendes.\n");
         printf("A casa principal esta diante de voce.\n");
         printf("Uma janela tem a luz acessa, mas fraca.\n");
@@ -149,7 +173,6 @@ void mostrarAmbiente(struct Player jogador) {
         //Se escreve va para arvore cai um galho na sua cabeça e perde 10 de vida
         //Se escrever vasculhe a caixa de ferramentas, acha a chave
         //E deve escrever após, abre a porta
-        
     }
 }
 
@@ -159,37 +182,15 @@ void iniciarJogo(struct Player *jogador) {
     printf("Digite 1 para comecar o jogo: ");
     scanf("%d", &comecar);
     limparBuffer();
+
+    MostrarPrologo();
+
     } while(comecar != 1);
     
     strcpy(jogador->nome, "Robson"); //Define o nome do protagonista
     jogador->vida = 100; //Vida inicial
     jogador->localAtual = 0; //Comeca no quintal
     jogador->qtd_itens = 0; //Inventario vazio
-
-    printf("\n====================================\n");
-    printf("           PROLOGO                  \n");
-    printf("====================================\n");
-
-    printf("\nHa dois anos, Jailson desapareceu misteriosamente.\n");
-    printf("Ele havia ido ate a Fazenda Mendes para realizar\n");
-    printf("um servico na propriedade vizinha.\n");
-
-    printf("\nDesde entao, Robson nunca mais teve noticias do amigo.\n");
-    printf("Ate que, em uma tarde chuvosa, uma carta chegou...\n");
-
-    printf("\nPressione ENTER para continuar...");
-    getchar();
-
-    mostrarCarta();
-
-    printf("\nPressione ENTER para continuar...");
-    getchar();
-
-    printf("\nRobson decide ir ate a Fazenda Mendes procurar Jailson.\n");
-    printf("Ao anoitecer, ele chega diante do portao da propriedade.\n");
-
-    printf("\nPressione ENTER para continuar...");
-    getchar();
 
     mostrarAmbiente(*jogador);
     
@@ -291,19 +292,20 @@ void jogarQuintal(struct Player *jogador) {
 
 //Cada ambiente deverá apresentar descrição e representação ASCII, sem interface gráfica.
 
-//Comandos mínimos: NORTE       SUL         LESTE OESTE       OLHAR       PEGAR TOCHA USAR CHAVE  EXAMINAR ALTAR INVENTARIO  MAPA        BUSCAR CRIPTA SALVAR      CARREGAR    AJUDA SAIR
+//Comandos mínimos: NORTE SUL LESTE OESTE OLHAR PEGAR TOCHA USAR CHAVE  EXAMINAR ALTAR INVENTARIO  MAPA BUSCAR CRIPTA SALVAR      CARREGAR    AJUDA SAIR
 //O programa deverá interpretar strings, validar comandos e tratar operações inválidas.
 
 int main(){
 
     struct Player jogador;
-
+    struct Ambiente ambientes[1]; //muda de acordo com a quantidade de ambientes.
+    struct Item itens[1]; //itens do jogo
+    
     mostrarTitulo();
     iniciarJogo(&jogador);
 
     //FASE 1
     jogarQuintal(&jogador);
-
 
 return 0;
 }
