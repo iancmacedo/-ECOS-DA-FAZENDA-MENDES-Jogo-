@@ -110,7 +110,7 @@ Uma voz masculina rouca ecoa pelo corredor:
 
 É Augusto Mendes.
 
-Robson se esconde enquanto o homem atravessa lentamente o corredor, arrastando uma das pernas.
+Robson se esconde enquanto o homem atravessa lentamente o corredor, arrastando uma das pernas.(dois esconderijos, embaixo da mesa, atras da estante)
 
 Sua pele apresenta manchas escuras e pequenas formações semelhantes a fungos.
 
