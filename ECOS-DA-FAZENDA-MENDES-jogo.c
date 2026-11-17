@@ -176,7 +176,78 @@ void mostrarAmbiente(struct Player jogador) {
     }
 }
 
-void iniciarJogo(struct Player *jogador) {
+void iniciarJogo(struct Player *jogador, struct Ambiente *ambientes) {
+    //bloco para implementação
+    
+    /*
+    ambientes[0].id = 1;
+    ambientes[0].nome = "Quintal";
+    ambientes[0].descricao = "descrição";
+    ambientes[0].arteASCII = "x";
+    ambientes[0].saida = (int[4]){2, -1, -1, -1}; 
+    ambientes[0].saida[0] =
+    ambientes[1].saida[1] =
+    ambientes[2].saida[2] =
+    ambientes[3].saida[4] =
+    ambientes[0].visitado = true;
+    ambientes[0].bloqueado = false;
+
+    ambientes[1].id = 2;
+    ambientes[1].nome = "Sala principal";
+    ambientes[1].descricao = "Descricao do ambiente 2";
+    ambientes[1].arteASCII = "x";
+    ambientes[1].saida = (int[4]){-1, 1, -1, -1};
+    ambientes[1].visitado = false;
+    ambientes[1].bloqueado = false;
+
+    ambientes[2].id = 3;
+    ambientes[2].nome = "Conzinha";
+    ambientes[2].descricao = "Descricao do ambiente 3";
+    ambientes[2].arteASCII = "x";
+    ambientes[2].saida = (int[4]){-1, -1, 1, -1};
+    ambientes[2].visitado = false;
+    ambientes[2].bloqueado = false;
+
+    ambientes[3].id = 4;
+    ambientes[3].nome = "Biblioteca";
+    ambientes[3].descricao = "Descricao do ambiente 4";
+    ambientes[3].arteASCII = "x";
+    ambientes[3].saida = (int[4]){-1, -1, -1, 1};
+    ambientes[3].visitado = false;
+    ambientes[3].bloqueado = false;
+
+    ambientes[4].id = 5;
+    ambientes[4].nome = "Corredor";
+    ambientes[4].descricao = "Descricao do ambiente 5";
+    ambientes[4].arteASCII = "x";
+    ambientes[4].saida = (int[4]){-1, -1, -1, -1};
+    ambientes[4].visitado = false;
+    ambientes[4].bloqueado = false;
+
+    ambientes[5].id = 6;
+    ambientes[5].nome = "Quarto de Augusto";
+    ambientes[5].descricao = "Descricao do ambiente 6";
+    ambientes[5].arteASCII = "x";
+    ambientes[5].saida = (int[4]){-1, -1, -1, -1};
+    ambientes[5].visitado = false;
+    ambientes[5].bloqueado = false;
+
+    ambientes[6].id = 7;
+    ambientes[6].nome = "Banhero";
+    ambientes[6].descricao = "Descricao do ambiente 7";
+    ambientes[6].arteASCII = "x";
+    ambientes[6].saida = (int[4]){-1, -1, -1, -1};
+    ambientes[6].visitado = false;
+    ambientes[6].bloqueado = false;
+
+    ambientes[7].id = 8;
+    ambientes[7].nome = "Porão";
+    ambientes[7].descricao = "Descricao do ambiente 8";
+    ambientes[7].arteASCII = "x";
+    ambientes[7].saida = (int[4]){-1, -1, -1, -1};
+    ambientes[7].visitado = false;
+    ambientes[7].bloqueado = false; */
+    
     int comecar = 0;
     do{
     printf("Digite 1 para comecar o jogo: ");
@@ -298,11 +369,11 @@ void jogarQuintal(struct Player *jogador) {
 int main(){
 
     struct Player jogador;
-    struct Ambiente ambientes[1]; //muda de acordo com a quantidade de ambientes.
+    struct Ambiente ambientes[8]; //muda de acordo com a quantidade de ambientes.
     struct Item itens[1]; //itens do jogo
     
     mostrarTitulo();
-    iniciarJogo(&jogador);
+    iniciarJogo(&jogador, &ambientes);
 
     //FASE 1
     jogarQuintal(&jogador);
