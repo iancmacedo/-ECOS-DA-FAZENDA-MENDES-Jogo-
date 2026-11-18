@@ -373,7 +373,7 @@ int main(){
     struct Item itens[1]; //itens do jogo
     
     mostrarTitulo();
-    iniciarJogo(&jogador, &ambientes);
+    iniciarJogo(&jogador, ambientes);
 
     //FASE 1
     jogarQuintal(&jogador);
