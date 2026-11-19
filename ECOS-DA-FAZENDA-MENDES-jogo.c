@@ -165,6 +165,7 @@ void mostrarAmbiente(struct Player jogador, struct Ambiente *ambientes) {
     }
 }
 
+//VA , PEGUE, MAPA, BUSCAR, OLHAR, INVENTARIO, ABRIR, SALVAR, 
 void iniciarJogo(struct Player *jogador, struct Ambiente *ambientes) {
 
 	ambientes[0].id = 0;
@@ -188,13 +189,13 @@ void iniciarJogo(struct Player *jogador, struct Ambiente *ambientes) {
 	       "  |_|    |____|__|____|          ||\n"
 	       "    _________________________________\n"
 	      );
-	ambientes[0].saidas[0] = 2;
+	ambientes[0].saidas[0] = -1; 
 	ambientes[0].saidas[1] = -1;
 	ambientes[0].saidas[2] = -1;
 	ambientes[0].saidas[4] = -1;
 	ambientes[0].visitado = true;
 	ambientes[0].bloqueado = false;
-
+//Norte, Sul, Leste, Oeste
 	ambientes[1].id = 1;
 	strcpy(ambientes[1].nome,"Sala principal");
 	strcpy(ambientes[1].descricao,"descrição");
@@ -217,8 +218,19 @@ void iniciarJogo(struct Player *jogador, struct Ambiente *ambientes) {
 	ambientes[2].visitado = false;
 	ambientes[2].bloqueado = false;
 
+	ambientes[4].id = 4;
+	strcpy(ambientes[4].nome,"Biblioteca");
+	strcpy(ambientes[4].descricao,"descrição");
+	strcpy(ambientes[3].arteASCII,"x");
+	ambientes[4].saidas[0] = -1;
+	ambientes[4].saidas[1] = -1;
+	ambientes[4].saidas[2] = -1;
+	ambientes[4].saidas[4] = -1;
+	ambientes[4].visitado = false;
+	ambientes[4].bloqueado = false;
+
 	ambientes[3].id = 3;
-	strcpy(ambientes[3].nome,"Biblioteca");
+	strcpy(ambientes[3].nome,"Corredor");
 	strcpy(ambientes[3].descricao,"descrição");
 	strcpy(ambientes[3].arteASCII,"x");
 	ambientes[3].saidas[0] = -1;
@@ -228,19 +240,19 @@ void iniciarJogo(struct Player *jogador, struct Ambiente *ambientes) {
 	ambientes[3].visitado = false;
 	ambientes[3].bloqueado = false;
 
-	ambientes[4].id = 4;
-	strcpy(ambientes[4].nome,"Corredor");
-	strcpy(ambientes[4].descricao,"descrição");
-	strcpy(ambientes[4].arteASCII,"x");
-	ambientes[4].saidas[0] = -1;
-	ambientes[4].saidas[1] = -1;
-	ambientes[4].saidas[2] = -1;
-	ambientes[4].saidas[4] = -1;
-	ambientes[4].visitado = false;
-	ambientes[4].bloqueado = false;
+	ambientes[6].id = 6;
+	strcpy(ambientes[6].nome,"Quarto do Augusto");
+	strcpy(ambientes[6].descricao,"descrição");
+	strcpy(ambientes[5].arteASCII,"x");
+	ambientes[6].saidas[0] = -1;
+	ambientes[6].saidas[1] = -1;
+	ambientes[6].saidas[2] = -1;
+	ambientes[6].saidas[4] = -1;
+	ambientes[6].visitado = false;
+	ambientes[6].bloqueado = false;
 
 	ambientes[5].id = 5;
-	strcpy(ambientes[5].nome,"Quarto do Augusto");
+	strcpy(ambientes[5].nome,"Banhero");
 	strcpy(ambientes[5].descricao,"descrição");
 	strcpy(ambientes[5].arteASCII,"x");
 	ambientes[5].saidas[0] = -1;
@@ -249,17 +261,6 @@ void iniciarJogo(struct Player *jogador, struct Ambiente *ambientes) {
 	ambientes[5].saidas[4] = -1;
 	ambientes[5].visitado = false;
 	ambientes[5].bloqueado = false;
-
-	ambientes[6].id = 6;
-	strcpy(ambientes[6].nome,"Banhero");
-	strcpy(ambientes[6].descricao,"descrição");
-	strcpy(ambientes[6].arteASCII,"x");
-	ambientes[6].saidas[0] = -1;
-	ambientes[6].saidas[1] = -1;
-	ambientes[6].saidas[2] = -1;
-	ambientes[6].saidas[4] = -1;
-	ambientes[6].visitado = false;
-	ambientes[6].bloqueado = false;
 
 	ambientes[7].id = 7;
 	strcpy(ambientes[7].nome,"Porão");
