@@ -155,7 +155,7 @@ void mostrarAmbiente(struct Player jogador, struct Ambiente *ambientes) {
     
     for(i = 0; i < 8; i++){
         if (jogador.localAtual == ambientes[i].id) {
-            printf("================%s===============\n\n %s %s", ambientes[0].nome, ambientes[i].arteASCII, ambientes[i].descricao);
+            printf("================%s===============\n\n %s %s \n", ambientes[0].nome, ambientes[i].arteASCII, ambientes[i].descricao);
         /////////TO-DO função para indentificar as saídas ////////////////
         //Se escrever va para casa, ela vai ta trancada
         //Se escreve va para arvore cai um galho na sua cabeça e perde 10 de vida
@@ -164,6 +164,7 @@ void mostrarAmbiente(struct Player jogador, struct Ambiente *ambientes) {
         }
     }
 }
+
 //COMANDOS : VA, OLHAR, PEGUE, MAPA, BUSCAR, INVENTARIO, ABRIR, SALVAR
 void iniciarJogo(struct Player *jogador, struct Ambiente *ambientes) {
  
@@ -271,7 +272,15 @@ void iniciarJogo(struct Player *jogador, struct Ambiente *ambientes) {
     ambientes[7].saidas[4] = -1;
     ambientes[7].visitado = false;
     ambientes[7].bloqueado = false;
- 
+
+    strcpy(jogador->nome, "Robson"); //Define o nome do protagonista
+    jogador->vida = 100; //Vida inicial
+    jogador->localAtual = 0; //Comeca no quintal
+    jogador->qtd_itens = 0; //Inventario vazio
+    mostrarAmbiente(*jogador, ambientes);
+    //salvarJogo("arquivo.txt", *jogador); //Cria um arquivo caso ele não exista.
+    //carregarJogo("arquivo.txt", jogador); //carrega o jogo
+
     int comecar = 0;
     do {
         printf("Digite 1 para comecar o jogo: ");
@@ -282,11 +291,8 @@ void iniciarJogo(struct Player *jogador, struct Ambiente *ambientes) {
  
     } while(comecar != 1);
  
-    strcpy(jogador->nome, "Robson"); //Define o nome do protagonista
-    jogador->vida = 100; //Vida inicial
-    jogador->localAtual = 0; //Comeca no quintal
-    jogador->qtd_itens = 0; //Inventario vazio
-    mostrarAmbiente(*jogador, ambientes);
+  
+
  
 }
  
@@ -337,6 +343,8 @@ void jogarQuintal(struct Player *jogador, struct Ambiente *ambiente, struct Item
         }
  
         else if (strcmp(comando, "ABRA A PORTA") == 0 ||strcmp(comando, "abra a porta") == 0 ||strcmp(comando, "Abra a porta") == 0) {
+            //temChave não foi criado
+            int temChave =1; //variavel temporaria////////////////
             if (temChave == 1) {
                 printf("\nVoce utiliza a chave enferrujada.\n");
                 printf("A porta se abre lentamente...\n");
@@ -389,26 +397,70 @@ void jogarQuintal(struct Player *jogador, struct Ambiente *ambiente, struct Item
  
 //Comandos mínimos: NORTE SUL LESTE OESTE OLHAR PEGAR TOCHA USAR CHAVE  EXAMINAR ALTAR INVENTARIO  MAPA BUSCAR CRIPTA SALVAR      CARREGAR    AJUDA SAIR
 //O programa deverá interpretar strings, validar comandos e tratar operações inválidas.
+
+
+int salvarJogo(char *caminho, struct Player jogador){
+
+FILE *arquivo = fopen(caminho, "w");
+
+if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo!\n");
+        return 0;
+    }
+    //nome;vida;localAtual;qtd_itens;inventario;
+    fprintf(arquivo,"%s;%d;%d;%d;",jogador.nome, jogador.vida, jogador.localAtual, jogador.qtd_itens);
+     int i;
+if(jogador.qtd_itens > 0){
+    for(i = 0; i < jogador.qtd_itens; i++){
+        
+        fprintf(arquivo,"%d;", jogador.inventario[i]);
+    }
+}
+
+fclose(arquivo);
+return 1;
+}
+
+int carregarJogo(char *caminho, struct Player *jogador){
+    FILE *arquivo = fopen(caminho, "r");
+
+    if(arquivo == NULL){
+        printf("Nenhum arquivo encontrado");
+        return 0;
+    }
+
+    if(fscanf(arquivo,"%49[^;];%d;%d;%d;", jogador->nome, &jogador->vida, &jogador->localAtual, &jogador->qtd_itens) != 4){
+        printf("Arquivo de save corrompido ou vazio!\n");
+        return 0;
+    }
+
+    for (int i = 0; i < jogador->qtd_itens; i++) {
+        fscanf(arquivo, "%d;", &jogador->inventario[i]);
+    }
+
+    fclose(arquivo);
+    return 1;
+}
  
 int main() {
  
     struct Player jogador;
     struct Ambiente ambientes[8];
- 
     struct Item chave;
     chave.id = 1;
     strcpy(chave.nome, "Chave Principal");
-    strcpy(chave.descrição, "Pode ser utilizada para abrir a porta principal");
-    chave.coletado = False;
-    chave.utilizado = False;
+    strcpy(chave.descricao, "Pode ser utilizada para abrir a porta principal");
+    chave.coletado = false;
+    chave.utilizado = false;
  
  
     mostrarTitulo();
     iniciarJogo(&jogador, ambientes);
+  
     //TO-DO fazer função jogar ambiente - que indentifica onde o
     // o player está e com isso ele indentifica os desafios///////
     //FASE 1
-    jogarQuintal(&jogador, ambientes);
+    jogarQuintal(&jogador, ambientes, &chave);
  
     return 0;
 }
