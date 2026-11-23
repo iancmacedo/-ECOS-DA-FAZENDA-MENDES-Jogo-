@@ -4,6 +4,10 @@
 #include <time.h> //Pra fazer timer
 #include <stdbool.h> //Permite deixar True ou False
  
+
+//Entrada[0] ___ salão[1] ___corredor[3] __________Quarto[6]_____Laboratório[7]
+//                                |                        |                           |
+//                               cozinha[2]    biblioteca[4]   banhero[5]
 struct Player {
     char nome[10]; //Robson
     int vida; //100
@@ -39,6 +43,29 @@ void limparBuffer() {
     int c;
     while ((c = getchar()) != '\n' && c != EOF);
 }
+
+//TERMINAR FUNÇÃO
+void RealizarAcao(){
+    
+    char acao[50];
+    fgets(acao, sizeof(acao), stdin);
+    
+    
+    char *token = strtok(acao, " ");
+    int i = 0; 
+    while(token != NULL && i < 2){
+        if(i == 0){
+         printf("A:%s\n",token);
+         i++;
+        }
+        token = strtok(NULL, " ");
+        if(i==1){
+            printf("D:%s\n",token);
+          i++;  
+        }
+    }
+}
+
  
 void mostrarTitulo() {
     puts("                                                                                                                     \n"
@@ -189,10 +216,10 @@ void iniciarJogo(struct Player *jogador, struct Ambiente *ambientes) {
            "  |_|    |____|__|____|          ||\n"
            "    _________________________________\n"
           );
-    ambientes[0].saidas[0] = 2;
-    ambientes[0].saidas[1] = -1;
-    ambientes[0].saidas[2] = -1;
-    ambientes[0].saidas[4] = -1;
+    ambientes[0].saidas[0] = 1; // SALA 
+    ambientes[0].saidas[1] = -1; 
+    ambientes[0].saidas[2] = -1; 
+    ambientes[0].saidas[4] = -1; 
     ambientes[0].visitado = true;
     ambientes[0].bloqueado = false;
  
@@ -200,9 +227,9 @@ void iniciarJogo(struct Player *jogador, struct Ambiente *ambientes) {
     strcpy(ambientes[1].nome,"Sala principal");
     strcpy(ambientes[1].descricao,"descrição");
     strcpy(ambientes[1].arteASCII,"x");
-    ambientes[1].saidas[0] = -1;
-    ambientes[1].saidas[1] = -1;
-    ambientes[1].saidas[2] = -1;
+    ambientes[1].saidas[0] = 3; //CORREDOR
+    ambientes[1].saidas[1] = 0; //ENTRADA
+    ambientes[1].saidas[2] = 2; //COZINHA
     ambientes[1].saidas[4] = -1;
     ambientes[1].visitado = false;
     ambientes[1].bloqueado = false;
@@ -211,7 +238,7 @@ void iniciarJogo(struct Player *jogador, struct Ambiente *ambientes) {
     strcpy(ambientes[2].nome,"Cozinha");
     strcpy(ambientes[2].descricao,"descrição");
     strcpy(ambientes[2].arteASCII,"x");
-    ambientes[2].saidas[0] = -1;
+    ambientes[2].saidas[0] = 1; //salao
     ambientes[2].saidas[1] = -1;
     ambientes[2].saidas[2] = -1;
     ambientes[2].saidas[4] = -1;
@@ -222,10 +249,10 @@ void iniciarJogo(struct Player *jogador, struct Ambiente *ambientes) {
     strcpy(ambientes[3].nome,"Corredor");
     strcpy(ambientes[3].descricao,"descrição");
     strcpy(ambientes[3].arteASCII,"x");
-    ambientes[3].saidas[0] = -1;
-    ambientes[3].saidas[1] = -1;
-    ambientes[3].saidas[2] = -1;
-    ambientes[3].saidas[4] = -1;
+    ambientes[3].saidas[0] = 1; //salao
+    ambientes[3].saidas[1] = 4; //biblioteca
+    ambientes[3].saidas[2] = 5; //banhero
+    ambientes[3].saidas[4] = 6 ; //quarto do augusto
     ambientes[3].visitado = false;
     ambientes[3].bloqueado = false;
  
@@ -233,7 +260,7 @@ void iniciarJogo(struct Player *jogador, struct Ambiente *ambientes) {
     strcpy(ambientes[4].nome,"Biblioteca");
     strcpy(ambientes[4].descricao,"descrição");
     strcpy(ambientes[4].arteASCII,"x");
-    ambientes[4].saidas[0] = -1;
+    ambientes[4].saidas[0] = 3;
     ambientes[4].saidas[1] = -1;
     ambientes[4].saidas[2] = -1;
     ambientes[4].saidas[4] = -1;
@@ -244,7 +271,7 @@ void iniciarJogo(struct Player *jogador, struct Ambiente *ambientes) {
     strcpy(ambientes[5].nome,"Banheiro");
     strcpy(ambientes[5].descricao,"descrição");
     strcpy(ambientes[5].arteASCII,"x");
-    ambientes[5].saidas[0] = -1;
+    ambientes[5].saidas[0] = 3;
     ambientes[5].saidas[1] = -1;
     ambientes[5].saidas[2] = -1;
     ambientes[5].saidas[4] = -1;
@@ -255,8 +282,8 @@ void iniciarJogo(struct Player *jogador, struct Ambiente *ambientes) {
     strcpy(ambientes[6].nome,"Quarto do Augusto");
     strcpy(ambientes[6].descricao,"descrição");
     strcpy(ambientes[6].arteASCII,"x");
-    ambientes[6].saidas[0] = -1;
-    ambientes[6].saidas[1] = -1;
+    ambientes[6].saidas[0] = 3;
+    ambientes[6].saidas[1] = 7;
     ambientes[6].saidas[2] = -1;
     ambientes[6].saidas[4] = -1;
     ambientes[6].visitado = false;
@@ -266,7 +293,7 @@ void iniciarJogo(struct Player *jogador, struct Ambiente *ambientes) {
     strcpy(ambientes[7].nome,"Laboratorio");
     strcpy(ambientes[7].descricao,"descrição");
     strcpy(ambientes[7].arteASCII,"x");
-    ambientes[7].saidas[0] = -1;
+    ambientes[7].saidas[0] = 6;
     ambientes[7].saidas[1] = -1;
     ambientes[7].saidas[2] = -1;
     ambientes[7].saidas[4] = -1;
@@ -331,7 +358,7 @@ void jogarQuintal(struct Player *jogador, struct Ambiente *ambiente, struct Item
         }
  
         else if (strcmp(comando, "VASCULHE A CAIXA") == 0 ||strcmp(comando, "vasculhe a caixa") == 0 ||strcmp(comando, "Vasculhe a caixa") == 0) {
-            if (chave->coletado = false) {
+            if (chave->coletado == false) {
                 printf("\nVoce encontrou uma chave!\n");
                 chave->coletado = true;
                 //adicionar ao inventario
