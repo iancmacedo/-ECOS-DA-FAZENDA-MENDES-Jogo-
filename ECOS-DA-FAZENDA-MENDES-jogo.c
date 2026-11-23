@@ -3,8 +3,11 @@
 #include <stdlib.h>//transforma string em num
 #include <time.h> //Pra fazer timer
 #include <stdbool.h> //Permite deixar True ou False
+ 
 
-
+//Entrada[0] ___ salão[1] ___corredor[3] __________Quarto[6]_____Laboratório[7]
+//                                |                        |                           |
+//                               cozinha[2]    biblioteca[4]   banhero[5]
 struct Player {
     char nome[10]; //Robson
     int vida; //100
@@ -12,14 +15,14 @@ struct Player {
     int inventario[10];
     int qtd_itens; //Inicia com 0
 };
-
+ 
 struct Item {
     int id;
     char nome[50];
     char descricao[100];
     bool coletado, utilizado;
 };
-
+ 
 struct Ambiente {
     int id; //8 locais
     char nome[50];
@@ -28,25 +31,48 @@ struct Ambiente {
     int saidas[4]; //Norte, Sul, Leste, Oeste
     bool visitado, bloqueado;
 };
-
+ 
 struct Enigma {
     int id;
     char descricao[100];
     char resposta[100];
     bool resolvido;
 };
-
+ 
 void limparBuffer() {
     int c;
     while ((c = getchar()) != '\n' && c != EOF);
 }
 
+//TERMINAR FUNÇÃO
+void RealizarAcao(){
+    
+    char acao[50];
+    fgets(acao, sizeof(acao), stdin);
+    
+    
+    char *token = strtok(acao, " ");
+    int i = 0; 
+    while(token != NULL && i < 2){
+        if(i == 0){
+         printf("A:%s\n",token);
+         i++;
+        }
+        token = strtok(NULL, " ");
+        if(i==1){
+            printf("D:%s\n",token);
+          i++;  
+        }
+    }
+}
+
+ 
 void mostrarTitulo() {
-    puts("                                                                                                     \n"
+    puts("                                                                                                                     \n"
          "#####  ###   ###   ####    ####   ###     #####  ###  ##### ##### #   # ####   ###     #   # ##### #   # ####  #####  ####\n"
          "#     #     #   # #        #   # #   #    #     #   #    #  #     ##  # #   # #   #    ## ## #     ##  # #   # #     #    \n"
          "####  #     #   #  ###     #   # #####    ####  #####   #   ####  # # # #   # #####    # # # ####  # # # #   # ####   ### \n"
-         "#     #     #   #     #    #   # #   #    #     #   #  #    #     #  ## #   # #   #    #   # #     #  ## #   #         #\n"
+         "#     #     #   #     #    #   # #   #    #     #   #  #    #     #  ## #   # #   #    #   # #     #  ## #   # #         #\n"
          "#####  ###   ###  ####     ####  #   #    #     #   # ##### ##### #   # ####  #   #    #   # ##### #   # ####  ##### #### \n"
          "\n\n\n"
          "####  #   #      ###  ###  #   #\n"
@@ -56,9 +82,9 @@ void mostrarTitulo() {
          "####    #        ### #   # #   #\n"
          "\n\n"
          "Se ficar em duvida digite 'DICA'\n"
-         );
+        );
 }
-
+ 
 void mostrarCarta() {
     puts("\n"
          "+--------------------------------------------------+\n"
@@ -89,9 +115,9 @@ void mostrarCarta() {
          "|                                                  |\n"
          "|                         Seu amigo, Jailson       |\n"
          "+--------------------------------------------------+\n"
-         );
+        );
 }
-
+ 
 void MostrarPrologo() {
     puts(
         "\n====================================\n"
@@ -105,28 +131,25 @@ void MostrarPrologo() {
         "Ate que, em uma tarde chuvosa, uma carta chegou...\n"
         "\nPressione ENTER para continuar..."
     );
-    getchar(); //serve para pausar a execução do programa e esperar que o usuário aperte ENTER antes de avançar para a próxima parte da história.
+    getchar();
     mostrarCarta();
-
-
+ 
     puts("\nPressione ENTER para continuar...");
     getchar();
-
-
+ 
     puts(
         "\nRobson decide ir ate a Fazenda Mendes procurar Jailson.\n"
         "Ao anoitecer, ele chega diante do portao da propriedade.\n"
         "\n"
         "Pressione ENTER para continuar...");
     getchar();
+ 
 }
-
+ 
 void Dica(struct Player jogador) {
-
-
+ 
     printf("\n========== DICA ==========\n");
-
-
+ 
     if (jogador.localAtual == 0) { //Quintal
         printf("VA PARA CASA, VA PARA ARVORE, VASCULHE A CAIXA, ABRA A PORTA");
     }
@@ -144,20 +167,16 @@ void Dica(struct Player jogador) {
     }
     else if (jogador.localAtual == 7) { //Laboratorio
     }
-
-
-    printf("\n");
 }
-
+ 
 void aplicarDano(struct Player *jogador, int dano) {
     jogador->vida -= dano;//A seta (->) acessa a vida do jogador atraves do ponteiro
-
-
+ 
     if (jogador->vida < 0) {
         jogador->vida = 0;//Impede que a vida fique negativa
     }
 } //aplicarDano(&jogador, 20); --> chama assim
-
+ 
 void mostrarAmbiente(int localAtual, struct Ambiente ambientes[]) { //chamar função mostrarAmbiente(jogador.localAtual, ambientes);
     int i;
 
@@ -173,38 +192,32 @@ void mostrarAmbiente(int localAtual, struct Ambiente ambientes[]) { //chamar fun
     }
 } 
 
-void jogarQuintal(struct Player *jogador, struct Ambiente ambiente[], struct Item *chave) {
+void jogarQuintal(struct Player *jogador, struct Ambiente *ambiente, struct Item *chave) {
     char comando[100];
     int caiuGalho = 0;
-
-
+ 
     while (jogador->localAtual == 0 && jogador->vida > 0) {
-
-
+ 
         printf("\nOK, "); // Exibe a mensagem OK na tela
         fgets(comando, sizeof(comando), stdin); // Le o comando digitado pelo jogador e armazena na string comando
         comando[strcspn(comando, "\n")] = '\0'; // Remove o Enter (\n) da string, substituindo pelo fim da string (\0)
-
-
+ 
         if (strcmp(comando, "VA PARA CASA") == 0 ||strcmp(comando, "va para casa") == 0 ||strcmp(comando, "Va para casa") == 0) {
             //imagem da porta
             printf("\nVoce se aproxima da casa.\n");
             printf("A porta principal esta trancada.\n");
         }
-
-
+ 
         else if (strcmp(comando, "VA PARA ARVORE") == 0 ||strcmp(comando, "va para arvore") == 0 ||strcmp(comando, "Va para arvore") == 0) {
             printf("\nVoce se aproxima da arvore antiga.\n");
             //imagem da arvore
-
-
+ 
             if (caiuGalho == 0) {
                 printf("Um galho cai sobre sua cabeca!\n");
                 //imagem com galho caido ao lado
                 aplicarDano(jogador, 10);
                 caiuGalho = 1;
-
-
+ 
                 printf("Voce perdeu 10 de vida!\n");
                 printf("Vida atual: %d\n", jogador->vida);
             }
@@ -212,58 +225,42 @@ void jogarQuintal(struct Player *jogador, struct Ambiente ambiente[], struct Ite
                 printf("Nao parece haver mais nada aqui.\n");
             }
         }
-
-
+ 
         else if (strcmp(comando, "VASCULHE A CAIXA") == 0 ||strcmp(comando, "vasculhe a caixa") == 0 ||strcmp(comando, "Vasculhe a caixa") == 0) {
             if (chave->coletado == false) {
                 printf("\nVoce encontrou uma chave!\n");
                 chave->coletado = true;
-
-
-                if (jogador->qtd_itens < 10) {
-                    jogador->inventario[jogador->qtd_itens] = chave->id;
-                    jogador->qtd_itens++;
-                }
                 //adicionar ao inventario
-
-
+                
             }
             else {
-                printf("\nNao tem mais nada.\n");
+                printf("\nNão tem mais nada.\n");
             }
         }
-
-
+ 
         else if (strcmp(comando, "ABRA A PORTA") == 0 ||strcmp(comando, "abra a porta") == 0 ||strcmp(comando, "Abra a porta") == 0) {
-            if (chave->coletado == true && chave->utilizado == false) {
+            //temChave não foi criado
+            int temChave =1; //variavel temporaria////////////////
+            if (temChave == 1) {
                 printf("\nVoce utiliza a chave enferrujada.\n");
                 printf("A porta se abre lentamente...\n");
-
-
-                chave->utilizado = true;
+ 
                 jogador->localAtual = 1;
-                ambiente[1].visitado = true;
                 printf("\nVoce entrou na sala principal!\n");
-            }
-            else if (chave->utilizado == true) {
-                printf("\nA porta ja esta aberta.\n");
             }
             else {
                 printf("\nA porta esta trancada. Procure uma chave.\n");
             }
         }
-
-
+ 
         else if (strcmp(comando, "DICA") == 0) {
             Dica(*jogador);
         }
-
-
+ 
         else if (strcmp(comando, "OLHAR") == 0) {
-            mostrarAmbiente(jogador->localAtual, ambiente);
+            mostrarAmbiente(*jogador, ambiente);
         }
-
-
+ 
         else {
             printf("\nComando invalido!\n");
         }
@@ -293,7 +290,7 @@ void iniciarJogo(struct Player *jogador, struct Ambiente ambientes[]) {
            "  |_|    |____|__|____|          ||\n"
            "    _____________________________\n"
           );
-    ambientes[0].saidas[0] = 2;
+    ambientes[0].saidas[0] = 1;//SALA
     ambientes[0].saidas[1] = -1;
     ambientes[0].saidas[2] = -1;
     ambientes[0].saidas[3] = -1;
@@ -305,9 +302,9 @@ void iniciarJogo(struct Player *jogador, struct Ambiente ambientes[]) {
     strcpy(ambientes[1].nome,"Sala principal");
     strcpy(ambientes[1].descricao,"descrição");
     strcpy(ambientes[1].arteASCII,"x");
-    ambientes[1].saidas[0] = -1;
-    ambientes[1].saidas[1] = -1;
-    ambientes[1].saidas[2] = -1;
+    ambientes[1].saidas[0] = 3;//CORREDOR
+    ambientes[1].saidas[1] = 0;//ENTRADA
+    ambientes[1].saidas[2] = 2;//COZINHA
     ambientes[1].saidas[3] = -1;
     ambientes[1].visitado = false;
     ambientes[1].bloqueado = false;
@@ -317,7 +314,7 @@ void iniciarJogo(struct Player *jogador, struct Ambiente ambientes[]) {
     strcpy(ambientes[2].nome,"Cozinha");
     strcpy(ambientes[2].descricao,"descrição");
     strcpy(ambientes[2].arteASCII,"x");
-    ambientes[2].saidas[0] = -1;
+    ambientes[2].saidas[0] = 1;//SALA
     ambientes[2].saidas[1] = -1;
     ambientes[2].saidas[2] = -1;
     ambientes[2].saidas[3] = -1;
@@ -329,10 +326,10 @@ void iniciarJogo(struct Player *jogador, struct Ambiente ambientes[]) {
     strcpy(ambientes[3].nome,"Corredor");
     strcpy(ambientes[3].descricao,"descrição");
     strcpy(ambientes[3].arteASCII,"x");
-    ambientes[3].saidas[0] = -1;
-    ambientes[3].saidas[1] = -1;
-    ambientes[3].saidas[2] = -1;
-    ambientes[3].saidas[3] = -1;
+    ambientes[3].saidas[0] = 1; //salao
+    ambientes[3].saidas[1] = 4; //biblioteca
+    ambientes[3].saidas[2] = 5; //banhero
+    ambientes[3].saidas[4] = 6 ; //quarto do augusto
     ambientes[3].visitado = false;
     ambientes[3].bloqueado = false;
 
@@ -341,10 +338,10 @@ void iniciarJogo(struct Player *jogador, struct Ambiente ambientes[]) {
     strcpy(ambientes[4].nome,"Biblioteca");
     strcpy(ambientes[4].descricao,"descrição");
     strcpy(ambientes[4].arteASCII,"x");
-    ambientes[4].saidas[0] = -1;
+    ambientes[4].saidas[0] = 3;
     ambientes[4].saidas[1] = -1;
     ambientes[4].saidas[2] = -1;
-    ambientes[4].saidas[3] = -1;
+    ambientes[4].saidas[4] = -1;
     ambientes[4].visitado = false;
     ambientes[4].bloqueado = false;
 
@@ -353,10 +350,10 @@ void iniciarJogo(struct Player *jogador, struct Ambiente ambientes[]) {
     strcpy(ambientes[5].nome,"Banheiro");
     strcpy(ambientes[5].descricao,"descrição");
     strcpy(ambientes[5].arteASCII,"x");
-    ambientes[5].saidas[0] = -1;
+    ambientes[5].saidas[0] = 3;
     ambientes[5].saidas[1] = -1;
     ambientes[5].saidas[2] = -1;
-    ambientes[5].saidas[3] = -1;
+    ambientes[5].saidas[4] = -1;
     ambientes[5].visitado = false;
     ambientes[5].bloqueado = false;
 
@@ -365,10 +362,10 @@ void iniciarJogo(struct Player *jogador, struct Ambiente ambientes[]) {
     strcpy(ambientes[6].nome,"Quarto do Augusto");
     strcpy(ambientes[6].descricao,"descrição");
     strcpy(ambientes[6].arteASCII,"x");
-    ambientes[6].saidas[0] = -1;
-    ambientes[6].saidas[1] = -1;
+    ambientes[6].saidas[0] = 3;
+    ambientes[6].saidas[1] = 7;
     ambientes[6].saidas[2] = -1;
-    ambientes[6].saidas[3] = -1;
+    ambientes[6].saidas[4] = -1;
     ambientes[6].visitado = false;
     ambientes[6].bloqueado = false;
 
@@ -377,54 +374,101 @@ void iniciarJogo(struct Player *jogador, struct Ambiente ambientes[]) {
     strcpy(ambientes[7].nome,"Laboratorio");
     strcpy(ambientes[7].descricao,"descrição");
     strcpy(ambientes[7].arteASCII,"x");
-    ambientes[7].saidas[0] = -1;
+    ambientes[7].saidas[0] = 6;
     ambientes[7].saidas[1] = -1;
     ambientes[7].saidas[2] = -1;
-    ambientes[7].saidas[3] = -1;
+    ambientes[7].saidas[4] = -1;
     ambientes[7].visitado = false;
     ambientes[7].bloqueado = false;
-
-    MostrarPrologo();
 
     strcpy(jogador->nome, "Robson"); //Define o nome do protagonista
     jogador->vida = 100; //Vida inicial
     jogador->localAtual = 0; //Comeca no quintal
     jogador->qtd_itens = 0; //Inventario vazio
+    mostrarAmbiente(*jogador, ambientes);
+    //salvarJogo("arquivo.txt", *jogador); //Cria um arquivo caso ele não exista.
+    //carregarJogo("arquivo.txt", jogador); //carrega o jogo
+
+    MostrarPrologo();
 
     mostrarAmbiente(jogador->localAtual, ambientes);
 
 }
-
-
+ 
 //void mostrarInventario(const Jogador &jogador);
-
+ 
 //bool coletarItem(Jogador &jogador, Item &item);
-
+ 
 //bool moverJogador(Jogador &jogador,const Ambiente ambientes[]);
-
+ 
 //int (quantidade, int direcao);
-
+ 
 //bool coletarItem(Jogador &jogador, Item &item);
-
+ 
 //void examinarObjeto(const Item &item);
-
+ 
 //bool resolverEnigma(Enigma &enigma,const std::string &resposta);
-
+ 
 //void salvarJogo(const Jogador &jogador);
-
+ 
 //bool carregarJogo(Jogador &jogador);
-
+ 
 //Implementar uma função recursiva que determine a existência de um caminho entre dois ambientes. A função deverá verificar o destino, registrar ambientes visitados, explorar conexões recursivamente, impedir ciclos e retornar sucesso ou fracasso.
-
+ 
 //Implementar SALVAR e CARREGAR, utilizando arquivos .txt para preservar o estado da partida. Exemplo: JOGADOR=Leonardo VIDA=75 LOCAL=4 INVENTARIO=1,3,5 PORTA_CRIPTA=ABERTA ENIGMA_ALTAR=RESOLVIDO ITEM_2_COLETADO=SIM
-
+ 
 //Cada ambiente deverá apresentar descrição e representação ASCII, sem interface gráfica.
-
-//Comandos mínimos: NORTE SUL LESTE OESTE OLHAR PEGAR TOCHA USAR CHAVE  EXAMINAR ALTAR INVENTARIO  MAPA BUSCAR CRIPTA SALVAR  CARREGAR  AJUDA SAIR
+ 
+//Comandos mínimos: NORTE SUL LESTE OESTE OLHAR PEGAR TOCHA USAR CHAVE  EXAMINAR ALTAR INVENTARIO  MAPA BUSCAR CRIPTA SALVAR      CARREGAR    AJUDA SAIR
 //O programa deverá interpretar strings, validar comandos e tratar operações inválidas.
 
-//COMANDOS : VA, OLHAR, PEGUE, MAPA, BUSCAR, INVENTARIO, ABRIR, SALVAR
 
+int salvarJogo(char *caminho, struct Player jogador){
+
+FILE *arquivo = fopen(caminho, "w");
+
+if (arquivo == NULL) {
+    printf("Erro ao abrir o arquivo!\n");
+
+    return 0;
+}
+    //nome;vida;localAtual;qtd_itens;inventario;
+    fprintf(arquivo,"%s;%d;%d;%d;",jogador.nome, jogador.vida, jogador.localAtual, jogador.qtd_itens);
+
+    int i;
+
+    if(jogador.qtd_itens > 0){
+        for(i = 0; i < jogador.qtd_itens; i++){
+            fprintf(arquivo,"%d;", jogador.inventario[i]);
+        }
+    }
+
+    fclose(arquivo);
+
+    return 1;
+}
+
+int carregarJogo(char *caminho, struct Player *jogador){
+    FILE *arquivo = fopen(caminho, "r");
+
+    if(arquivo == NULL){
+        printf("Nenhum arquivo encontrado");
+        return 0;
+    }
+
+    if(fscanf(arquivo,"%49[^;];%d;%d;%d;", jogador->nome, &jogador->vida, &jogador->localAtual, &jogador->qtd_itens) != 4){
+        printf("Arquivo de save corrompido ou vazio!\n");
+        return 0;
+    }
+
+    for (int i = 0; i < jogador->qtd_itens; i++) {
+        fscanf(arquivo, "%d;", &jogador->inventario[i]);
+    }
+
+    fclose(arquivo);
+    return 1;
+}
+ 
 int main() {
 
     struct Player jogador;
