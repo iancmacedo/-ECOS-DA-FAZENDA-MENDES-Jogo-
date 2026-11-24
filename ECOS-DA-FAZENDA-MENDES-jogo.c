@@ -38,34 +38,33 @@ struct Enigma {
     char resposta[100];
     bool resolvido;
 };
+
+void jogarSala(struct Player *jogador, struct Ambiente *ambientes){
+
+}
+void jogarCozinha(struct Player *jogador, struct Ambiente *ambientes){
+
+}
+void jogarCorredor(struct Player *jogador, struct Ambiente *ambientes){
+
+}
+void jogarBiblioteca(struct Player *jogador, struct Ambiente *ambientes){
+
+}
+void jogarBanheiro(struct Player *jogador, struct Ambiente *ambientes){
+
+}
+void jogarQuarto(struct Player *jogador, struct Ambiente *ambientes){
+
+}
+void jogarLaboratorio(struct Player *jogador, struct Ambiente *ambientes){
+
+}
  
 void limparBuffer() {
     int c;
     while ((c = getchar()) != '\n' && c != EOF);
 }
-
-//TERMINAR FUNÇÃO
-void RealizarAcao(){
-    
-    char acao[50];
-    fgets(acao, sizeof(acao), stdin);
-    
-    
-    char *token = strtok(acao, " ");
-    int i = 0; 
-    while(token != NULL && i < 2){
-        if(i == 0){
-         printf("A:%s\n",token);
-         i++;
-        }
-        token = strtok(NULL, " ");
-        if(i==1){
-            printf("D:%s\n",token);
-          i++;  
-        }
-    }
-}
-
  
 void mostrarTitulo() {
     puts("                                                                                                                     \n"
@@ -258,7 +257,7 @@ void jogarQuintal(struct Player *jogador, struct Ambiente *ambiente, struct Item
         }
  
         else if (strcmp(comando, "OLHAR") == 0) {
-            mostrarAmbiente(*jogador, ambiente);
+            mostrarAmbiente(jogador->localAtual, ambiente);
         }
  
         else {
@@ -329,7 +328,7 @@ void iniciarJogo(struct Player *jogador, struct Ambiente ambientes[]) {
     ambientes[3].saidas[0] = 1; //salao
     ambientes[3].saidas[1] = 4; //biblioteca
     ambientes[3].saidas[2] = 5; //banhero
-    ambientes[3].saidas[4] = 6 ; //quarto do augusto
+    ambientes[3].saidas[3] = 6 ; //quarto do augusto
     ambientes[3].visitado = false;
     ambientes[3].bloqueado = false;
 
@@ -341,7 +340,7 @@ void iniciarJogo(struct Player *jogador, struct Ambiente ambientes[]) {
     ambientes[4].saidas[0] = 3;
     ambientes[4].saidas[1] = -1;
     ambientes[4].saidas[2] = -1;
-    ambientes[4].saidas[4] = -1;
+    ambientes[4].saidas[3] = -1;
     ambientes[4].visitado = false;
     ambientes[4].bloqueado = false;
 
@@ -353,7 +352,7 @@ void iniciarJogo(struct Player *jogador, struct Ambiente ambientes[]) {
     ambientes[5].saidas[0] = 3;
     ambientes[5].saidas[1] = -1;
     ambientes[5].saidas[2] = -1;
-    ambientes[5].saidas[4] = -1;
+    ambientes[5].saidas[3] = -1;
     ambientes[5].visitado = false;
     ambientes[5].bloqueado = false;
 
@@ -365,7 +364,7 @@ void iniciarJogo(struct Player *jogador, struct Ambiente ambientes[]) {
     ambientes[6].saidas[0] = 3;
     ambientes[6].saidas[1] = 7;
     ambientes[6].saidas[2] = -1;
-    ambientes[6].saidas[4] = -1;
+    ambientes[6].saidas[3] = -1;
     ambientes[6].visitado = false;
     ambientes[6].bloqueado = false;
 
@@ -377,7 +376,7 @@ void iniciarJogo(struct Player *jogador, struct Ambiente ambientes[]) {
     ambientes[7].saidas[0] = 6;
     ambientes[7].saidas[1] = -1;
     ambientes[7].saidas[2] = -1;
-    ambientes[7].saidas[4] = -1;
+    ambientes[7].saidas[3] = -1;
     ambientes[7].visitado = false;
     ambientes[7].bloqueado = false;
 
@@ -385,9 +384,8 @@ void iniciarJogo(struct Player *jogador, struct Ambiente ambientes[]) {
     jogador->vida = 100; //Vida inicial
     jogador->localAtual = 0; //Comeca no quintal
     jogador->qtd_itens = 0; //Inventario vazio
-    mostrarAmbiente(*jogador, ambientes);
-    //salvarJogo("arquivo.txt", *jogador); //Cria um arquivo caso ele não exista.
-    //carregarJogo("arquivo.txt", jogador); //carrega o jogo
+    mostrarAmbiente(jogador->localAtual, ambientes);
+    
 
     MostrarPrologo();
 
@@ -409,11 +407,27 @@ void iniciarJogo(struct Player *jogador, struct Ambiente ambientes[]) {
  
 //bool resolverEnigma(Enigma &enigma,const std::string &resposta);
  
-//void salvarJogo(const Jogador &jogador);
- 
-//bool carregarJogo(Jogador &jogador);
- 
-//Implementar uma função recursiva que determine a existência de um caminho entre dois ambientes. A função deverá verificar o destino, registrar ambientes visitados, explorar conexões recursivamente, impedir ciclos e retornar sucesso ou fracasso.
+int encontrarAmbiente(struct Ambiente *ambientes, int localAtual, int localAlvo, int *visitado){
+     visitado[localAtual] = 1;
+    printf("Explorando: %d\n", localAtual);
+    if(localAtual == localAlvo){
+        printf("Sala %d encontrada", localAlvo);
+        return 1;
+    }
+
+for(int i = 0; i < 4; i++){
+    int proximaSala = ambientes[localAtual].saidas[i];
+    
+    if(proximaSala != -1 && !visitado[proximaSala] && !ambientes[proximaSala].bloqueado){
+        if (encontrarAmbiente(ambientes, proximaSala, localAlvo, visitado)) {
+                return 1; 
+        }
+    }
+}
+
+return 0;
+
+}
  
 //Implementar SALVAR e CARREGAR, utilizando arquivos .txt para preservar o estado da partida. Exemplo: JOGADOR=Leonardo VIDA=75 LOCAL=4 INVENTARIO=1,3,5 PORTA_CRIPTA=ABERTA ENIGMA_ALTAR=RESOLVIDO ITEM_2_COLETADO=SIM
  
@@ -422,7 +436,8 @@ void iniciarJogo(struct Player *jogador, struct Ambiente ambientes[]) {
 //Comandos mínimos: NORTE SUL LESTE OESTE OLHAR PEGAR TOCHA USAR CHAVE  EXAMINAR ALTAR INVENTARIO  MAPA BUSCAR CRIPTA SALVAR      CARREGAR    AJUDA SAIR
 //O programa deverá interpretar strings, validar comandos e tratar operações inválidas.
 
-
+//salvarJogo("arquivo.txt", *jogador); //Cria um arquivo caso ele não exista.
+//carregarJogo("arquivo.txt", jogador); //carrega o jogo
 int salvarJogo(char *caminho, struct Player jogador){
 
 FILE *arquivo = fopen(caminho, "w");
@@ -432,7 +447,7 @@ if (arquivo == NULL) {
 
     return 0;
 }
-    //nome;vida;localAtual;qtd_itens;inventario;
+    //nome;vida;localAtual;qtd_itens;inventario;//////////enigmas quando implementar//////////////////////////////////
     fprintf(arquivo,"%s;%d;%d;%d;",jogador.nome, jogador.vida, jogador.localAtual, jogador.qtd_itens);
 
     int i;
@@ -468,6 +483,31 @@ int carregarJogo(char *caminho, struct Player *jogador){
     fclose(arquivo);
     return 1;
 }
+
+//TERMINAR FUNÇÃO
+void RealizarAcao(struct Player jogador, struct Ambiente *Ambientes){
+    int visitado[8] = {0}; //levar para dentro do if depois de fazer-lo. 
+    int localAlvo = 7; //temporário
+    char acao[50];
+    //encontrarAmbiente(Ambientes,jogador.localAtual,localAlvo,visitado);
+    char comando[20], objeto[20];
+    fgets(acao, sizeof(acao), stdin);
+    
+    
+    char *token = strtok(acao, " ");
+    int i = 0; 
+    while(token != NULL && i < 2){
+        if(i == 0){
+         printf("A:%s\n",token);
+         i++;
+        }
+        token = strtok(NULL, " ");
+        if(i==1){
+            printf("C:%s\n",token);
+          i++;  
+        }
+    }
+}
  
 int main() {
 
@@ -475,6 +515,8 @@ int main() {
     struct Ambiente ambientes[8];
 
     struct Item chave;
+
+   
     chave.id = 1;
     strcpy(chave.nome, "Chave Principal");
     strcpy(chave.descricao, "Pode ser utilizada para abrir a porta principal");
@@ -491,6 +533,7 @@ int main() {
 
     mostrarTitulo();
     iniciarJogo(&jogador, ambientes); 
+    RealizarAcao(jogador,ambientes);
 
     while (jogador.vida > 0) {
 
