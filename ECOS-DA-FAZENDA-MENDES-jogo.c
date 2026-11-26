@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>//transforma string em num
 #include <time.h> //Pra fazer timer
+#include <conio.h>//será utilizada para permitir que o jogador digite durante o timer sem que o programa fique parado esperando o Enter.
 #include <stdbool.h> //Permite deixar True ou False
  
 
@@ -39,9 +40,263 @@ struct Enigma {
     bool resolvido;
 };
 
-void jogarSala(struct Player *jogador, struct Ambiente *ambientes){
-
+void jogarQuintal(struct Player *jogador, struct Ambiente *ambientes, struct Item *chave) {
+    char comando[100];
+    int caiuGalho = 0;
+ 
+    while (jogador->localAtual == 0 && jogador->vida > 0) {
+ 
+        printf("\nOK, "); // Exibe a mensagem OK na tela
+        fgets(comando, sizeof(comando), stdin); // Le o comando digitado pelo jogador e armazena na string comando
+        comando[strcspn(comando, "\n")] = '\0'; // Remove o Enter (\n) da string, substituindo pelo fim da string (\0)
+ 
+        if (strcmp(comando, "VA PARA CASA") == 0 ||strcmp(comando, "va para casa") == 0 ||strcmp(comando, "Va para casa") == 0) {
+            //imagem da porta
+            printf("\nVoce se aproxima da casa.\n");
+            printf("A porta principal esta trancada.\n");
+        }
+ 
+        else if (strcmp(comando, "VA PARA ARVORE") == 0 ||strcmp(comando, "va para arvore") == 0 ||strcmp(comando, "Va para arvore") == 0) {
+            printf("\nVoce se aproxima da arvore antiga.\n");
+            //imagem da arvore
+ 
+            if (caiuGalho == 0) {
+                printf("Um galho cai sobre sua cabeca!\n");
+                //imagem com galho caido ao lado
+                aplicarDano(jogador, 10);
+                caiuGalho = 1;
+ 
+                printf("Voce perdeu 10 de vida!\n");
+                printf("Vida atual: %d\n", jogador->vida);
+            }
+            else {
+                printf("Nao parece haver mais nada aqui.\n");
+            }
+        }
+ 
+        else if (strcmp(comando, "VASCULHE A CAIXA") == 0 ||strcmp(comando, "vasculhe a caixa") == 0 ||strcmp(comando, "Vasculhe a caixa") == 0) {
+            if (chave->coletado == false) {
+                printf("\nVoce encontrou uma chave!\n");
+                chave->coletado = true;
+                //adicionar ao inventario
+                
+            }
+            else {
+                printf("\nNão tem mais nada.\n");
+            }
+        }
+ 
+        else if (strcmp(comando, "ABRA A PORTA") == 0 ||strcmp(comando, "abra a porta") == 0 ||strcmp(comando, "Abra a porta") == 0) {
+            
+            if (chave->coletado == true) {
+                printf("\nVoce utiliza a chave.\n");
+                printf("A porta se abre lentamente...\n");
+                chave->utilizado = true;
+ 
+                jogador->localAtual = 1;
+                printf("\nVoce entrou na sala principal!\n");
+            }
+            else {
+                printf("\nA porta esta trancada. Procure uma chave.\n");
+            }
+        }
+ 
+        else if (strcmp(comando, "DICA") == 0) {
+            Dica(*jogador);
+        }
+ 
+        else if (strcmp(comando, "OLHAR") == 0) {
+            mostrarAmbiente(jogador->localAtual, ambiente);
+        }
+ 
+        else {
+            printf("\nComando invalido!\n");
+        }
+    }
 }
+
+void jogarSala(struct Player *jogador, struct Ambiente *ambientes, struct Item *chave2){ 
+    char comando[100];
+    int tocar = 0;
+    int examinar = 0;
+
+    while (jogador->localAtual == 1 && jogador->vida > 0){//voce pode examinar as manchas na parede
+ 
+        printf("\nOK, "); // Exibe a mensagem OK na tela
+        fgets(comando, sizeof(comando), stdin); // Le o comando digitado pelo jogador e armazena na string comando
+        comando[strcspn(comando, "\n")] = '\0'; // Remove o Enter (\n) da string, substituindo pelo fim da string (\0)
+
+        if (strcmp(comando, "VA PARA MESA DE JANTAR") == 0 ||strcmp(comando, "va para mesa de jantar") == 0 ||strcmp(comando, "Va para mesa de jantar") == 0) {
+            //imagem da mesa
+            printf("\nVoce se aproxima da mesa.\n");
+            printf("Nela ha as mesmas manchas da parede.\n");
+        }
+ 
+        else if (strcmp(comando, "VA PARA COMODA") == 0 ||strcmp(comando, "va para comoda") == 0 ||strcmp(comando, "Va para comoda") == 0) {
+            printf("\nVoce se aproxima da comoda.\n");
+            printf("Nela ha um retrato da familia Mendes.\n");
+            //imagem da comoda
+        }
+ 
+        else if (strcmp(comando, "EXAMINE O RETRATO") == 0 ||strcmp(comando, "examine o retrato") == 0 ||strcmp(comando, "Examine o retrato") == 0) {
+            printf("\nVoce olha atras dele, e vem uma anotação\n");
+            puts("O que está debaixo desta casa nunca deveria ter sido trazido para a superfície.\n"
+                "Se os alarmes começarem, não tente correr. Descubra como desligá-los"
+                );
+           //mostre um retrato
+        }
+
+        else if (strcmp(comando, "VA PARA O ARMARIO") == 0 ||strcmp(comando, "va para o armario") == 0 ||strcmp(comando, "Va para o armario") == 0) {
+            
+            if (chave2->coletado == false) {
+                printf("\nVoce abre o armario e ve algumas baratas passando dentro dele");
+                printf("E logo abaixo voce encontra uma chave enferrujada.\n");
+                chave2->coletado = true;
+            }
+
+            else {
+                printf("\nNao ha mais nada no armario.\n");
+            }
+        }
+
+        else if (strcmp(comando, "EXAMINE AS MANCHAS") == 0 ||strcmp(comando, "examine as manchas") == 0 ||strcmp(comando, "Examine as manchas") == 0) {
+            if(examinar == 0){
+                printf("\nVoce chega perto das manchas que são bem escuras e tem o cheiro ruim.\n");
+                printf("Voce nunca viu isso antes. Deseja tocar 1(SIM) 2(NAO).\n");
+                scanf("%d",&tocar);
+                getchar(); //Consome o Enter que ficou no buffer de entrada.
+
+                if(tocar == 1){
+                    printf("\nVocê toca.\n");
+                    printf("A PELE DO SEU DEDO QUEIMA.(PERDE 10 DE VIDA)\n");
+                    aplicarDano(jogador, 10);
+                }
+
+                else{ //se não toca na 
+                    printf("\nVoce se afasta.\n");
+                }
+
+                puts("Nesse momento, Voce escuta passos pesados no andar superior.\n"
+                    "Uma voz masculina rouca ecoa pelo corredor: Tem alguém mexendo nas minhas coisas?\n"
+                    "É Augusto Mendes.\n"
+                    );
+
+                    printf("\nVoce tem 20 segundos para se esconder!\n");
+                    printf("\nLugares disponiveis:\n");
+                    printf("- ESCONDA ATRAS DO ARMARIO\n");
+                    printf("- ESCONDA EMBAIXO DA MESA\n");
+
+                    time_t inicio = time(NULL);// Registra o horario atual e inicia a contagem dos 20 segundos
+                    int tempoRestante = 20;// Variavel que armazena o tempo restante
+                    int pos = 0;// Posicao atual do vetor que armazena o comando digitado
+                    int tecla;// Armazena a tecla pressionada pelo jogador
+                    int escondido = 0;// Indica se o jogador conseguiu se esconder (0 = nao, 1 = sim)
+                    char esconder[100] = "";// Vetor que armazena o comando digitado pelo jogador
+
+                    printf("\nDigite seu comando: ");
+
+                    while (difftime(time(NULL), inicio) < 20 && escondido == 0) {// Continua enquanto nao passarem 20 segundos e o jogador nao estiver escondido
+                        if (kbhit()) {// Verifica se alguma tecla foi pressionada
+                            tecla = getch(); // Captura a tecla pressionada sem precisar apertar ENTER
+
+                            if (tecla == '\r') {// Verifica se o jogador apertou ENTER
+                                esconder[pos] = '\0';// Finaliza a string colocando o caractere nulo
+
+                                // Verifica se o jogador escolheu se esconder atras do armario
+                                if (strcmp(esconder, "ESCONDA ATRAS DO ARMARIO") == 0 || strcmp(esconder, "esconda atras do armario") == 0) {
+                                    printf("\n\nVoce se esconde atras do armario.");
+                                    escondido = 1;
+                                }
+
+                                // Verifica se o jogador escolheu se esconder embaixo da mesa
+                                else if (strcmp(esconder, "ESCONDA EMBAIXO DA MESA") == 0 || strcmp(esconder, "esconda embaixo da mesa") == 0) {
+                                    printf("\n\nVoce se esconde embaixo da mesa.");
+                                    escondido = 1;
+                                }
+
+                                else {
+                                    printf("\nComando invalido! Tente novamente: ");
+                                    pos = 0; // Reinicia a posicao do vetor para receber outro comando
+                                    esconder[0] = '\0';// Limpa o conteudo anterior da string
+                                }
+                            }
+
+                            else if (tecla == '\b' && pos > 0) {// Verifica se o jogador apertou BACKSPACE
+                                pos--;
+                                esconder[pos] = '\0'; //o texto armazenado também é atualizado quando o jogador apaga uma letra
+                                printf("\b \b");// Apaga visualmente o ultimo caractere digitado
+                            }
+
+                            else if (pos < 99 && tecla >= 32 && tecla <= 126) { // Verifica se a tecla digitada e um caractere imprimivel e se ainda existe espaco no vetor
+                                esconder[pos] = tecla;// Armazena a tecla na posicao atual do vetor
+                                pos++;
+                                printf("%c", tecla); // Mostra na tela o caractere digitado
+                            }
+                        }
+
+                        int novoTempo = 20 - (int)difftime(time(NULL), inicio);// Calcula quantos segundos ja passaram desde o inicio
+
+                        if (novoTempo != tempoRestante) {// Verifica se o tempo restante mudou
+                            tempoRestante = novoTempo; // Atualiza o tempo restante
+
+                            printf("\nTempo restante: %d segundos\n", tempoRestante);// Exibe quantos segundos ainda restam
+                            printf("Comando: %s", esconder);// Exibe novamente o comando que esta sendo digitado
+                        }
+                    }
+
+                    if (escondido == 0) { 
+
+                        printf("\n\nVoce demorou demais!\n");
+                        printf("Augusto encontrou voce.\n");
+                        printf("GAME OVER!\n");
+
+                        jogador->vida = 0;
+                    }
+                    else {
+                        printf("\nVoce ve ele, sua pele apresenta manchas escuras e pequenas formações semelhantes a fungos. Ele ainda parece humano, mas seus movimentos são anormais.\n");
+                        printf("Augusto nao ve nada e retorna ao segundo andar.\n");
+                        printf("Apos essa euforia, se voce ja viu tudo da sala, va para a cozinha\n")
+
+                    }
+
+                examinar = 1;
+            }
+
+            else{
+                printf("\nVoce ja examinou as manchas.\n");
+            }
+        }
+ 
+        else if (strcmp(comando, "DICA") == 0) {
+            Dica(*jogador);
+        }
+ 
+        else if (strcmp(comando, "OLHAR") == 0) {
+            mostrarAmbiente(jogador->localAtual, ambientes);
+        }
+    
+        else if (strcmp(comando, "VA PARA A COZINHA") == 0 || strcmp(comando, "va para a cozinha") == 0 || strcmp(comando, "Va para a cozinha") == 0) {
+
+            printf("\nVoce abre a porta.\n");
+            jogador->localAtual = 2;
+            printf("\nVoce chegou a cozinha!\n");
+        }
+
+        else if (strcmp(comando, "VA PARA O CORREDOR") == 0 || strcmp(comando, "va para o corredor") == 0 || strcmp(comando, "Va para o corredor") == 0) {
+            printf("\nVoce caminha em direcao ao corredor.\n");
+            printf("O ambiente fica cada vez mais escuro...\n");
+
+            jogador->localAtual = 3;
+
+            printf("\nVoce chegou ao corredor!\n");
+        }
+ 
+        else {
+            printf("\nComando invalido!\n");
+        } 
+    }
+}
+
 void jogarCozinha(struct Player *jogador, struct Ambiente *ambientes){
 
 }
@@ -153,6 +408,7 @@ void Dica(struct Player jogador) {
         printf("VA PARA CASA, VA PARA ARVORE, VASCULHE A CAIXA, ABRA A PORTA");
     }
     else if (jogador.localAtual == 1) { //Salão principal
+        printf("VA PARA MESA DE JANTAR, VA PARA COMODA, EXAMINE O RETRATO, VA PARA O ARMARIO, EXAMINAR MANCHAS, VA PARA A COZINHA, VA PARA O CORREDOR");
     }
     else if (jogador.localAtual == 2) { //Cozinha
     }
@@ -191,81 +447,6 @@ void mostrarAmbiente(int localAtual, struct Ambiente ambientes[]) { //chamar fun
     }
 } 
 
-void jogarQuintal(struct Player *jogador, struct Ambiente *ambiente, struct Item *chave) {
-    char comando[100];
-    int caiuGalho = 0;
- 
-    while (jogador->localAtual == 0 && jogador->vida > 0) {
- 
-        printf("\nOK, "); // Exibe a mensagem OK na tela
-        fgets(comando, sizeof(comando), stdin); // Le o comando digitado pelo jogador e armazena na string comando
-        comando[strcspn(comando, "\n")] = '\0'; // Remove o Enter (\n) da string, substituindo pelo fim da string (\0)
- 
-        if (strcmp(comando, "VA PARA CASA") == 0 ||strcmp(comando, "va para casa") == 0 ||strcmp(comando, "Va para casa") == 0) {
-            //imagem da porta
-            printf("\nVoce se aproxima da casa.\n");
-            printf("A porta principal esta trancada.\n");
-        }
- 
-        else if (strcmp(comando, "VA PARA ARVORE") == 0 ||strcmp(comando, "va para arvore") == 0 ||strcmp(comando, "Va para arvore") == 0) {
-            printf("\nVoce se aproxima da arvore antiga.\n");
-            //imagem da arvore
- 
-            if (caiuGalho == 0) {
-                printf("Um galho cai sobre sua cabeca!\n");
-                //imagem com galho caido ao lado
-                aplicarDano(jogador, 10);
-                caiuGalho = 1;
- 
-                printf("Voce perdeu 10 de vida!\n");
-                printf("Vida atual: %d\n", jogador->vida);
-            }
-            else {
-                printf("Nao parece haver mais nada aqui.\n");
-            }
-        }
- 
-        else if (strcmp(comando, "VASCULHE A CAIXA") == 0 ||strcmp(comando, "vasculhe a caixa") == 0 ||strcmp(comando, "Vasculhe a caixa") == 0) {
-            if (chave->coletado == false) {
-                printf("\nVoce encontrou uma chave!\n");
-                chave->coletado = true;
-                //adicionar ao inventario
-                
-            }
-            else {
-                printf("\nNão tem mais nada.\n");
-            }
-        }
- 
-        else if (strcmp(comando, "ABRA A PORTA") == 0 ||strcmp(comando, "abra a porta") == 0 ||strcmp(comando, "Abra a porta") == 0) {
-            //temChave não foi criado
-            int temChave =1; //variavel temporaria////////////////
-            if (temChave == 1) {
-                printf("\nVoce utiliza a chave enferrujada.\n");
-                printf("A porta se abre lentamente...\n");
- 
-                jogador->localAtual = 1;
-                printf("\nVoce entrou na sala principal!\n");
-            }
-            else {
-                printf("\nA porta esta trancada. Procure uma chave.\n");
-            }
-        }
- 
-        else if (strcmp(comando, "DICA") == 0) {
-            Dica(*jogador);
-        }
- 
-        else if (strcmp(comando, "OLHAR") == 0) {
-            mostrarAmbiente(jogador->localAtual, ambiente);
-        }
- 
-        else {
-            printf("\nComando invalido!\n");
-        }
-    }
-}
-
 void iniciarJogo(struct Player *jogador, struct Ambiente ambientes[]) {
 
     //QUINTAL
@@ -277,7 +458,7 @@ void iniciarJogo(struct Player *jogador, struct Ambiente ambientes[]) {
         "Uma janela tem a luz acessa, mas fraca.\n"
         "Uma arvore antiga se encontra ao lado da casa.\n"
         "E uma caixa de ferramenta do outro lado.\n"
-          );
+        );
     strcpy(ambientes[0].arteASCII,
            "                                 /\\\\\n"
            "                                /**\\\\\n"
@@ -299,7 +480,15 @@ void iniciarJogo(struct Player *jogador, struct Ambiente ambientes[]) {
     //SALA PRINCIPAL
     ambientes[1].id = 1;
     strcpy(ambientes[1].nome,"Sala principal");
-    strcpy(ambientes[1].descricao,"descrição");
+    strcpy(ambientes[1].descricao,
+        "\nVoce esta na Sala Principal da Casa.\n"
+        "No interior, o ambiente parece ter sido abandonado às pressas.\n"
+        "Na sua frente uma mesa de jantar permanece posta.\n"
+        "A sua esquerda uma comoda coberta de poeira, e a sua direita um armario tambem empoeirado\n"
+        "O armario parece estar destrancado.\n"
+        "Manchas de uma substância escura se espalham pelas paredes.(elas podem ser examinadas)\n"
+        "No canto esquerdo da mesa, tem uma porta que leva a cozinha.\n"
+        );
     strcpy(ambientes[1].arteASCII,"x");
     ambientes[1].saidas[0] = 3;//CORREDOR
     ambientes[1].saidas[1] = 0;//ENTRADA
@@ -384,9 +573,7 @@ void iniciarJogo(struct Player *jogador, struct Ambiente ambientes[]) {
     jogador->vida = 100; //Vida inicial
     jogador->localAtual = 0; //Comeca no quintal
     jogador->qtd_itens = 0; //Inventario vazio
-    mostrarAmbiente(jogador->localAtual, ambientes);
     
-
     MostrarPrologo();
 
     mostrarAmbiente(jogador->localAtual, ambientes);
@@ -408,24 +595,24 @@ void iniciarJogo(struct Player *jogador, struct Ambiente ambientes[]) {
 //bool resolverEnigma(Enigma &enigma,const std::string &resposta);
  
 int encontrarAmbiente(struct Ambiente *ambientes, int localAtual, int localAlvo, int *visitado){
-     visitado[localAtual] = 1;
+    visitado[localAtual] = 1;
     printf("Explorando: %d\n", localAtual);
     if(localAtual == localAlvo){
         printf("Sala %d encontrada", localAlvo);
         return 1;
     }
 
-for(int i = 0; i < 4; i++){
-    int proximaSala = ambientes[localAtual].saidas[i];
+    for(int i = 0; i < 4; i++){
+        int proximaSala = ambientes[localAtual].saidas[i];
     
-    if(proximaSala != -1 && !visitado[proximaSala] && !ambientes[proximaSala].bloqueado){
-        if (encontrarAmbiente(ambientes, proximaSala, localAlvo, visitado)) {
-                return 1; 
+        if(proximaSala != -1 && !visitado[proximaSala] && !ambientes[proximaSala].bloqueado){
+            if (encontrarAmbiente(ambientes, proximaSala, localAlvo, visitado)) {
+                    return 1; 
+            }
         }
     }
-}
 
-return 0;
+    return 0;
 
 }
  
@@ -438,15 +625,16 @@ return 0;
 
 //salvarJogo("arquivo.txt", *jogador); //Cria um arquivo caso ele não exista.
 //carregarJogo("arquivo.txt", jogador); //carrega o jogo
+
 int salvarJogo(char *caminho, struct Player jogador){
 
-FILE *arquivo = fopen(caminho, "w");
+    FILE *arquivo = fopen(caminho, "w");
 
-if (arquivo == NULL) {
-    printf("Erro ao abrir o arquivo!\n");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo!\n");
 
-    return 0;
-}
+        return 0;
+    }
     //nome;vida;localAtual;qtd_itens;inventario;//////////enigmas quando implementar//////////////////////////////////
     fprintf(arquivo,"%s;%d;%d;%d;",jogador.nome, jogador.vida, jogador.localAtual, jogador.qtd_itens);
 
@@ -515,11 +703,17 @@ int main() {
     struct Ambiente ambientes[8];
 
     struct Item chave;
-
-   
+    
     chave.id = 1;
     strcpy(chave.nome, "Chave Principal");
     strcpy(chave.descricao, "Pode ser utilizada para abrir a porta principal");
+    chave.coletado = false;
+    chave.utilizado = false;
+
+    struct Item chave2;
+    chave2.id = 2;
+    strcpy(chave.nome, "Chave Enferrujada");
+    strcpy(chave.descricao, "Talvez possa abrir alguma cela");
     chave.coletado = false;
     chave.utilizado = false;
 
