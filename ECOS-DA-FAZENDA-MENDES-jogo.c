@@ -12,7 +12,7 @@
 
 struct Player {
     char nome[10]; //Robson
-    int vida; //100
+    int vida; //80
     int localAtual;
     int inventario[10];
     int qtd_itens; //Inicia com 0
@@ -40,6 +40,62 @@ struct Enigma {
     char resposta[100];
     bool resolvido;
 };
+
+void Dica(struct Player jogador) {
+ 
+    printf("\n========== DICA ==========\n");
+ 
+    if (jogador.localAtual == 0) { //Quintal
+        printf("VA PARA CASA, VA PARA ARVORE, VASCULHE A CAIXA, ABRA A PORTA");
+    }
+    else if (jogador.localAtual == 1) { //Salão principal
+        printf("VA PARA MESA DE JANTAR, VA PARA COMODA, EXAMINE O RETRATO, VA PARA O ARMARIO, EXAMINAR MANCHAS, VA PARA A COZINHA, VA PARA O CORREDOR");
+    }
+    else if (jogador.localAtual == 2) { //Cozinha
+        printf("ABRA A GELADEIRA, EXAMINE A PIA, EXAMINE A MESA, VASCULHE O ARMARIO, EXAMINE O FOGAO, VOLTE PARA SALA, VA PARA O CORREDOR");
+    }
+    else if (jogador.localAtual == 3) { //Corredor
+    }
+    else if (jogador.localAtual == 4) { //Biblioteca
+    }
+    else if (jogador.localAtual == 5) { //Banheiro
+    }
+    else if (jogador.localAtual == 6) { //Quarto
+    }
+    else if (jogador.localAtual == 7) { //Laboratorio
+    }
+}
+ 
+void aplicarDano(struct Player *jogador, int dano) {
+    jogador->vida -= dano;//A seta (->) acessa a vida do jogador atraves do ponteiro
+ 
+    if (jogador->vida < 0) {
+        jogador->vida = 0;//Impede que a vida fique negativa
+    }
+} //aplicarDano(&jogador, 20); --> chama assim
+
+void usarCura(struct Player *jogador, struct Item itens[]){
+    if(itens[2].coletado == true){
+        if(itens[2].utilizado == false){
+
+            if(jogador->vida > 0 && jogador->vida < 80){
+                jogador->vida += 10;
+                printf("\nVoce curou 10 de vida, Vida atual: %d", jogador->vida);
+            }
+
+            else{
+                printf("\nSua vida esta cheia voce nao pode mais se curar.");
+            }
+        }
+        else{
+            printf("\nVoce ja utilizou o equipamento medico.");
+        }
+    }
+    else{
+        printf("\nVoce não possui itens de cura.");
+    }
+
+}
 
 void jogarQuintal(struct Player *jogador, struct Ambiente *ambientes, struct Item *itens) {
     char comando[100];
@@ -76,11 +132,10 @@ void jogarQuintal(struct Player *jogador, struct Ambiente *ambientes, struct Ite
         }
  
         else if (strcmp(comando, "VASCULHE A CAIXA") == 0 ||strcmp(comando, "vasculhe a caixa") == 0 ||strcmp(comando, "Vasculhe a caixa") == 0) {
-            if (itens->coletado == false) {
+            if (itens[0].coletado == false) {
                 printf("\nVoce encontrou uma chave!\n");
-                itens->coletado = true;
+                itens[0].coletado = true;
                 //adicionar ao inventario
-                
             }
             else {
                 printf("\nNão tem mais nada.\n");
@@ -89,10 +144,10 @@ void jogarQuintal(struct Player *jogador, struct Ambiente *ambientes, struct Ite
  
         else if (strcmp(comando, "ABRA A PORTA") == 0 ||strcmp(comando, "abra a porta") == 0 ||strcmp(comando, "Abra a porta") == 0) {
             
-            if (itens->coletado == true) {
+            if (itens[1].coletado == true) {
                 printf("\nVoce utiliza a chave.\n");
                 printf("A porta se abre lentamente...\n");
-                itens->utilizado = true;
+                itens[1].utilizado = true;
                 
                 jogador->localAtual = 1;
                 printf("\nVoce entrou na sala principal!\n");
@@ -108,6 +163,10 @@ void jogarQuintal(struct Player *jogador, struct Ambiente *ambientes, struct Ite
  
         else if (strcmp(comando, "OLHAR") == 0) {
             mostrarAmbiente(jogador->localAtual, ambientes);
+        }
+
+        else if(strcmp(comando, "USAR CURA") == 0){
+            usarCura(jogador, itens);
         }
  
         else {
@@ -151,10 +210,10 @@ void jogarSala(struct Player *jogador, struct Ambiente *ambientes, struct Item *
 
         else if (strcmp(comando, "VA PARA O ARMARIO") == 0 ||strcmp(comando, "va para o armario") == 0 ||strcmp(comando, "Va para o armario") == 0) {
             
-            if (itens->coletado == false) {
+            if (itens[1].coletado == false) {
                 printf("\nVoce abre o armario e ve algumas baratas passando dentro dele");
                 printf("E logo abaixo voce encontra uma chave enferrujada.\n");
-                itens->coletado = true;
+                itens[1].coletado = true;
             }
 
             else {
@@ -292,6 +351,10 @@ void jogarSala(struct Player *jogador, struct Ambiente *ambientes, struct Item *
 
             printf("\nVoce chegou ao corredor!\n");
         }
+
+        else if(strcmp(comando, "USAR CURA") == 0){
+            usarCura(jogador, itens);
+        }
  
         else {
             printf("\nComando invalido!\n");
@@ -302,21 +365,146 @@ void jogarSala(struct Player *jogador, struct Ambiente *ambientes, struct Item *
     }
 }
 
-void jogarCozinha(struct Player *jogador, struct Ambiente *ambientes){
+void jogarCozinha(struct Player *jogador, struct Ambiente *ambientes, struct Item *itens){
 
+    char comando[100];
+    int geladeira = 0;
+    int pia = 0;
+    int mesa = 0;
+    int armario = 0;
+    int fogao = 0;
+
+    while (jogador->localAtual == 2 && jogador->vida > 0){
+
+        printf("\nOK, ");
+        fgets(comando, sizeof(comando), stdin);
+        comando[strcspn(comando, "\n")] = '\0';
+
+        if(strcmp(comando, "ABRA A GELADEIRA") == 0 || strcmp(comando, "abra a geladeira") == 0 || strcmp(comando, "Abra a geladeira") == 0){
+
+            if(geladeira == 0){
+
+                printf("\nVoce abre a geladeira.\n");
+                printf("Um cheiro extremamente desagradavel sai dela.\n");
+                printf("Entre alguns alimentos estragados, VOCE ENCONTRA UM MEDICAMENTO!.\n");
+
+                itens[2].coletado = true;
+
+                geladeira = 1;
+            }
+            else{
+                printf("\nA geladeira ja foi vasculhada.\n");
+            }
+        }
+
+        else if(strcmp(comando, "EXAMINE A PIA") == 0 || strcmp(comando, "examine a pia") == 0 || strcmp(comando, "Examine a pia") == 0){
+
+            if(pia == 0){
+
+                printf("\nVoce se aproxima da pia.\n");
+                printf("Uma substancia escura escorre pela torneira.\n");
+                printf("A agua parece estar contaminada.\n");
+
+                pia = 1;
+            }
+            else{
+                printf("\nVoce ja examinou a pia.\n");
+            }
+        }
+
+        else if(strcmp(comando, "EXAMINE A MESA") == 0 || strcmp(comando, "examine a mesa") == 0 || strcmp(comando, "Examine a mesa") == 0){
+
+            if(mesa == 0){
+
+                printf("\nVoce encontra um pequeno bilhete molhado.\n");
+
+                puts("\n'Augusto disse que precisamos continuar nos alimentando normalmente."
+                     "\nMas ninguem mais consegue comer como antes.'");
+
+                mesa = 1;
+            }
+            else{
+                printf("\nVoce ja examinou a mesa.\n");
+            }
+        }
+
+        else if(strcmp(comando, "VASCULHE O ARMARIO") == 0 || strcmp(comando, "vasculhe o armario") == 0 || strcmp(comando, "Vasculhe o armario") == 0){
+
+            if(armario == 0){
+
+                printf("\nVoce abre o armario.\n");
+                printf("Não tem nada!\n"); //talvez colocar uma faca, que ajude num puzzle ou algo assim (mas acho q n)
+
+                armario = 1;
+            }
+            else{
+                printf("\nO armario ja foi vasculhado.\n");
+            }
+        }
+
+        else if(strcmp(comando, "EXAMINE O FOGAO") == 0 || strcmp(comando, "examine o fogao") == 0 || strcmp(comando, "Examine o fogao") == 0){
+
+            if(fogao == 0){
+
+                printf("\nVoce examina o fogao.\n");
+                printf("Existem restos de comida completamente deteriorados.\n");
+                printf("Parece que alguem preparou uma refeicao recentemente.\n");
+
+                fogao = 1;
+            }
+            else{
+                printf("\nVoce ja examinou o fogao.\n");
+            }
+        }
+
+        else if(strcmp(comando, "VOLTE PARA SALA") == 0 || strcmp(comando, "volte para sala") == 0 || strcmp(comando, "Volte para sala") == 0){
+
+            printf("\nVoce retorna para a sala principal.\n");
+            jogador->localAtual = 1;
+        }
+
+        else if(strcmp(comando, "VA PARA O CORREDOR") == 0 || strcmp(comando, "va para o corredor") == 0 || strcmp(comando, "va para o corredor") == 0){
+
+            printf("\nVoce sai da cozinha e segue em direcao ao corredor.\n");
+            jogador->localAtual = 3;
+        }
+
+        else if(strcmp(comando, "DICA") == 0){
+            Dica(*jogador);
+        }
+
+        else if(strcmp(comando, "OLHAR") == 0){
+            mostrarAmbiente(jogador->localAtual, ambientes);
+        }
+
+        else if(strcmp(comando, "USAR CURA") == 0){
+            usarCura(jogador, itens);
+        }
+
+        else{
+            printf("\nComando invalido!\n");
+        }
+
+        ambientes[2].visitado = true;
+    }
 }
+
 void jogarCorredor(struct Player *jogador, struct Ambiente *ambientes){
 
 }
+
 void jogarBiblioteca(struct Player *jogador, struct Ambiente *ambientes){
 
 }
+
 void jogarBanheiro(struct Player *jogador, struct Ambiente *ambientes){
 
 }
+
 void jogarQuarto(struct Player *jogador, struct Ambiente *ambientes){
 
 }
+
 void jogarLaboratorio(struct Player *jogador, struct Ambiente *ambientes){
 
 }
@@ -405,38 +593,6 @@ void MostrarPrologo() {
  
 }
  
-void Dica(struct Player jogador) {
- 
-    printf("\n========== DICA ==========\n");
- 
-    if (jogador.localAtual == 0) { //Quintal
-        printf("VA PARA CASA, VA PARA ARVORE, VASCULHE A CAIXA, ABRA A PORTA");
-    }
-    else if (jogador.localAtual == 1) { //Salão principal
-        printf("VA PARA MESA DE JANTAR, VA PARA COMODA, EXAMINE O RETRATO, VA PARA O ARMARIO, EXAMINAR MANCHAS, VA PARA A COZINHA, VA PARA O CORREDOR");
-    }
-    else if (jogador.localAtual == 2) { //Cozinha
-    }
-    else if (jogador.localAtual == 3) { //Corredor
-    }
-    else if (jogador.localAtual == 4) { //Biblioteca
-    }
-    else if (jogador.localAtual == 5) { //Banheiro
-    }
-    else if (jogador.localAtual == 6) { //Quarto
-    }
-    else if (jogador.localAtual == 7) { //Laboratorio
-    }
-}
- 
-void aplicarDano(struct Player *jogador, int dano) {
-    jogador->vida -= dano;//A seta (->) acessa a vida do jogador atraves do ponteiro
- 
-    if (jogador->vida < 0) {
-        jogador->vida = 0;//Impede que a vida fique negativa
-    }
-} //aplicarDano(&jogador, 20); --> chama assim
- 
 void mostrarAmbiente(int localAtual, struct Ambiente ambientes[]) { //chamar função mostrarAmbiente(jogador.localAtual, ambientes);
     int i;
 
@@ -505,7 +661,15 @@ void iniciarJogo(struct Player *jogador, struct Ambiente ambientes[]) {
     //COZINHA
     ambientes[2].id = 2;
     strcpy(ambientes[2].nome,"Cozinha");
-    strcpy(ambientes[2].descricao,"descrição");
+    strcpy(ambientes[2].descricao,
+        "\nVoce esta na cozinha da Fazenda Mendes.\n"
+        "O ambiente esta completamente desorganizado.\n"
+        "Uma geladeira antiga se encontra no canto.\n"
+        "Existe uma pia com uma substancia escura.\n"
+        "Uma mesa possui restos de comida e alguns papeis.\n"
+        "Um armario permanece parcialmente aberto.\n"
+        "Um fogao antigo esta encostado na parede.\n"
+    );
     strcpy(ambientes[2].arteASCII,"x");
     ambientes[2].saidas[0] = 1;//SALA
     ambientes[2].saidas[1] = -1;
@@ -682,19 +846,25 @@ int main() {
 
     struct Player jogador;
     struct Ambiente ambientes[8];
-    struct Item itens;
+    struct Item itens[3];
     
-    itens.id = 1;
-    strcpy(itens.nome, "Chave Principal");
-    strcpy(itens.descricao, "Pode ser utilizada para abrir a porta principal");
-    itens.coletado = false;
-    itens.utilizado = false;
+    itens[0].id = 1;
+    strcpy(itens[0].nome, "Chave Principal");
+    strcpy( itens[0].descricao, "Pode ser utilizada para abrir a porta principal");
+    itens[0].coletado = false;
+    itens[0].utilizado = false;
 
-    itens.id = 2;
-    strcpy(itens.nome, "Chave Enferrujada");
-    strcpy(itens.descricao, "Talvez possa abrir alguma cela");
-    itens.coletado = false;
-    itens.utilizado = false;
+    itens[1].id = 2;
+    strcpy(itens[1].nome, "Chave Enferrujada");
+    strcpy(itens[1].descricao, "Talvez possa abrir alguma cela");
+    itens[1].coletado = false;
+    itens[1].utilizado = false;
+
+    itens[2].id = 3;
+    strcpy(itens[2].nome, "Equipamento Médico");
+    strcpy(itens[2].descricao, "Pode ser utilizada para curar sua vida (Digite: USAR CURA)");
+    itens[2].coletado = false;
+    itens[2].utilizado = false;
 
     int comecar = 0;
     do {
@@ -719,7 +889,7 @@ int main() {
         }
 
         else if (jogador.localAtual == 2) { //FASE 3
-            jogarCozinha(&jogador, ambientes);
+            jogarCozinha(&jogador, ambientes, &itens);
         }
 
         else if (jogador.localAtual == 3) { //FASE 4
